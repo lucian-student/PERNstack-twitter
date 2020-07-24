@@ -18,7 +18,6 @@ function Register() {
         const { email, password, username, confirmpassword } = data;
         if (password === confirmpassword) {
             setValidPassword(true);
-            console.log(data);
             try {
                 const body = { name: username, email, password };
                 const response = await fetch('http://localhost:5000/users/register/', {
@@ -27,7 +26,7 @@ function Register() {
                     body: JSON.stringify(body)
                 });
                 const parseRs = await response.json();
-                localStorage.setItem('accessToken',parseRs.accesToken);
+                localStorage.setItem('accessToken', parseRs.accesToken);
             } catch (err) {
                 alert(err.message);
                 console.log(err.message);

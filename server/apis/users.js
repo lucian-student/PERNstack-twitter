@@ -112,6 +112,7 @@ router.post('/login/', validation, async (req, res) => {
 //put
 
 //delete
+// needs rework:3
 router.delete('/logout/:id', authorization, async (req, res) => {
     try {
         const userId = parseInt(req.params.id);

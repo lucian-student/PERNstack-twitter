@@ -13,7 +13,21 @@ function Login() {
     const regEx = /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$/;
     const { register, handleSubmit, errors } = useForm();
     async function handleLogin(data) {
-        console.log(data);
+        const { email, password } = data;
+        try {
+            const body = { email, password };
+            const response = await fetch('http://localhost:5000/users/login/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            });
+            const parseRs = await response.json();
+            console.log(parseRs);
+            localStorage.setItem('accessToken', parseRs.accesToken);
+        } catch (err) {
+            alert(err.message);
+            console.log(err.message);
+        }
     }
     return (
         <Fragment >
