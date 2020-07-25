@@ -7,19 +7,31 @@ require('dotenv').config();
 
 //post
 // neeeds rework
-router.post('/:id', async (req, res) => {
+// Auth will create refresh token in db and in http only cookie after login or if the cookie is not expired 
+// accces token can be stored  in local storage because it will be like 1m long so it doesnt rlly matter
+// so everytime acces token expires you will get new one if refresh token is in cookie
+// And refresh token must be in db too, when is new refresh token called all other user refresh tokens are deleted
+// So thats the play for the auth!
+router.post('/refresh_token', async (req, res) => {
     try {
-         const userId = parseInt(req.params.id);
-         const checkRefreshToken = await pool.query('SELECT * FROM refreshTokens WHERE user_id=$1', [userId]);
-         if (checkRefreshToken.rows.length === 1) {
-             jwt.verify(checkRefreshToken.rows[0].token, process.env.SECRET2, (err, user) => {
-                 if (err) return res.status(403).json('Not Authorized!');
-                 const accessToken = generateAccessToken(userId);
-                 res.json({ accessToken, refreshToken: checkRefreshToken.rows[0].token });
-             });
-         } else {
-             return res.status(403).json('Not Authorized!');
-         }
+        const refreshToken = req.cookies.refreshToken;
+        
+
+        jwt.verify(refreshToken, process.env.SECRET2, async (err, user) => {
+            if(err) {
+                res.status(403).json('Not Authorized!');
+            }else{
+                const checkToken = await pool.query('SELECT * FROM refreshTokens WHERE token=$1',[refreshToken])
+
+                if(checkToken.rows.length===1){
+                    const accessToken  = generateAccessToken(user.user);
+                    res.json({accessToken});
+                }else{
+                    res.status(403).json('Not Authorized!');
+                }
+            }
+        });
+
     } catch (err) {
         console.log(err.message);
         res.status(403).json('Not Authorized!');

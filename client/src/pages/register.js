@@ -26,7 +26,7 @@ function Register() {
                     body: JSON.stringify(body)
                 });
                 const parseRs = await response.json();
-                localStorage.setItem('accessToken', parseRs.accesToken);
+                localStorage.setItem('accessToken', parseRs.accessToken);
             } catch (err) {
                 alert(err.message);
                 console.log(err.message);

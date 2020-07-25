@@ -23,7 +23,7 @@ function Login() {
             });
             const parseRs = await response.json();
             console.log(parseRs);
-            localStorage.setItem('accessToken', parseRs.accesToken);
+            localStorage.setItem('accessToken', parseRs.accessToken);
         } catch (err) {
             alert(err.message);
             console.log(err.message);
