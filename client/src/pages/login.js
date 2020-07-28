@@ -1,5 +1,7 @@
 import React, { Fragment } from 'react';
 import { useForm } from 'react-hook-form';
+import { setAccessToken } from '../utils/accessToken';
+import {transport} from '../axios/cookieAxios';
 import {
     TextField,
     FormHelperText,
@@ -14,20 +16,16 @@ function Login() {
     const { register, handleSubmit, errors } = useForm();
     async function handleLogin(data) {
         const { email, password } = data;
-        try {
-            const body = { email, password };
-            const response = await fetch('http://localhost:5000/users/login/', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(body)
-            });
-            const parseRs = await response.json();
-            console.log(parseRs);
-            localStorage.setItem('accessToken', parseRs.accessToken);
-        } catch (err) {
-            alert(err.message);
-            console.log(err.message);
-        }
+        return await transport
+            .post('http://localhost:5000/users/login/', {
+                data: { email, password },
+                headers: { 'Content-Type': 'application/json' }
+            })
+            .then(res => {
+                setAccessToken(res.data.accessToken);
+                console.log(res.data.accessToken)
+            })
+            .catch(err => console.error(err));
     }
     return (
         <Fragment >
@@ -47,6 +45,7 @@ function Login() {
                                         name="email"
                                         type="email"
                                         placeholder="Email"
+                                        autoComplete="on"
                                         inputRef={register({
                                             pattern: regEx,
                                             required: true
@@ -64,6 +63,7 @@ function Login() {
                                         name="password"
                                         type="password"
                                         placeholder="Password"
+                                        autoComplete="off"
                                         inputRef={register({
                                             required: true,
                                             minLength: 8

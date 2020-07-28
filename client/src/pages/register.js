@@ -1,5 +1,7 @@
 import React, { Fragment, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { setAccessToken } from '../utils/accessToken';
+import {transport} from '../axios/cookieAxios';
 import {
     TextField,
     FormHelperText,
@@ -18,19 +20,16 @@ function Register() {
         const { email, password, username, confirmpassword } = data;
         if (password === confirmpassword) {
             setValidPassword(true);
-            try {
-                const body = { name: username, email, password };
-                const response = await fetch('http://localhost:5000/users/register/', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(body)
-                });
-                const parseRs = await response.json();
-                localStorage.setItem('accessToken', parseRs.accessToken);
-            } catch (err) {
-                alert(err.message);
-                console.log(err.message);
-            }
+            return await transport
+                .post('http://localhost:5000/users/register/', {
+                    data: { email, password, username, confirmpassword },
+                    headers: { 'Content-Type': 'application/json' }
+                })
+                .then(res => {
+                    setAccessToken(res.data.accessToken);
+                    console.log(res.data.accessToken)
+                })
+                .catch(err => console.error(err));
         } else {
             setValidPassword(false);
         }
@@ -53,6 +52,7 @@ function Register() {
                                         name="username"
                                         type="text"
                                         placeholder="Username"
+                                        autoComplete="off"
                                         inputRef={register({
                                             required: true,
                                             minLength: 3,
@@ -80,6 +80,7 @@ function Register() {
                                         name="email"
                                         type="email"
                                         placeholder="Email"
+                                        autoComplete="off"
                                         inputRef={register({
                                             pattern: regEx,
                                             required: true
@@ -97,6 +98,7 @@ function Register() {
                                         name="password"
                                         type="password"
                                         placeholder="Password"
+                                        autoComplete="off"
                                         inputRef={register({
                                             required: true,
                                             minLength: 8,
@@ -124,6 +126,7 @@ function Register() {
                                         name="confirmpassword"
                                         type="password"
                                         placeholder="Confirm Password"
+                                        autoComplete="off"
                                         inputRef={register({
                                             required: true,
                                             minLength: 8,

@@ -10,7 +10,7 @@ require('dotenv').config();
 //user calls
 
 //get 
-router.get("/is-verify", authorization, async (req, res) => {
+router.get('/is-verify', authorization, async (req, res) => {
     try {
         res.json(true);
     } catch (err) {
@@ -21,7 +21,7 @@ router.get("/is-verify", authorization, async (req, res) => {
 // post 
 router.post('/register/', validation, async (req, res) => {
     try {
-        const { name, email, password } = req.body;
+        const { name, email, password } = req.body.data;
         const userCheck = await pool.query('SELECT * FROM users WHERE email=$1', [email]);
         if (userCheck.rows.length === 0) {
             // password hash
@@ -42,13 +42,12 @@ router.post('/register/', validation, async (req, res) => {
                     [newUser.rows[0].user_id, refreshToken]);
             const currentRefreshToken = newRefreshToken.rows[0].token;
             // handle cookies
-            res.cookie('refreshToken', { refreshToken: currentRefreshToken }, {
+            res.cookie('refreshToken', refreshToken, {
                 httpOnly: true,
-                maxAge: 3600,
+                maxAge: 60 * 60 * 24 * 7 * 1000
                 //secure:true
             });
-            //handle response
-            res.json({ accessToken, refreshToken: currentRefreshToken });
+            res.status(200).json({ accessToken });
         } else {
             res.status(401).json('User Exists');
         }
@@ -60,7 +59,7 @@ router.post('/register/', validation, async (req, res) => {
 
 router.post('/login/', validation, async (req, res) => {
     try {
-        const { email, password } = req.body;
+        const { email, password } = req.body.data;
         const userCheck = await pool.query('SELECT * FROM users WHERE email=$1', [email]);
         if (userCheck.rows.length === 1) {
 
@@ -68,41 +67,19 @@ router.post('/login/', validation, async (req, res) => {
             if (validPassword) {
                 // token handeling
                 const accessToken = generateAccessToken(userCheck.rows[0].user_id);
-                let currentRefreshToken;
-                //check if refresh token exists 
-                const checkToken = await pool.query('SELECT * FROM refreshTokens WHERE user_id=$1', [userCheck.rows[0].user_id]);
-                if (checkToken.rows.length === 0) {
-                    //refresh token insert to database
-                    const refreshToken = generateRefreshToken(userCheck.rows[0].user_id);
-                    const newRefreshToken = await pool.query
-                        ('INSERT INTO refreshTokens (user_id,token) VALUES ($1,$2)',
-                            [userCheck.rows[0].user_id, refreshToken]);
-                    currentRefreshToken = refreshToken;
-                } else {
-                    jwt.verify(checkToken.rows[0].token, process.env.SECRET2, async (err, user) => {
-                        if (err) {
-                            //delete previous one 
-                            const deleteToken = await pool.query('DELETE FROM refreshTokens WHERE user_id=$1',
-                                [userCheck.rows[0].user_id]);
-                            //refresh token insert to database
-                            const refreshToken = generateRefreshToken(userCheck.rows[0].user_id);
-                            const newRefreshToken = await pool.query
-                                ('INSERT INTO refreshTokens (user_id,token) VALUES ($1,$2)',
-                                    [userCheck.rows[0].user_id, refreshToken]);
-                            currentRefreshToken = refreshToken;
-                        } else {
-                            currentRefreshToken = checkToken.rows[0].token;
-                        }
-                    });
-                }
+                const refreshToken = generateRefreshToken(userCheck.rows[0].user_id);
+                // delete all previous refresh tokens
+                const deleteTokens = await pool.query('DELETE FROM refreshTokens WHERE user_id=$1', [userCheck.rows[0].user_id]);
+                const newRefreshToken = await pool.query('INSERT INTO refreshTokens (user_id,token) VALUES ($1,$2) RETURNING *', [
+                    userCheck.rows[0].user_id, refreshToken
+                ])
                 // handle cookies
-                res.cookie('refreshToken', { refreshToken: currentRefreshToken }, {
+                res.cookie('refreshToken', refreshToken, {
                     httpOnly: true,
-                    maxAge: 3600,
-                    //secure:true
+                    maxAge: 60 * 60 * 24 * 7 * 1000
+                    // secure:true
                 });
-                //handle response
-                res.json({ accessToken, refreshToken: currentRefreshToken });
+                res.status(200).json({ accessToken });
             } else {
                 return res.status(401).send('Password doesnt match!');
             }
@@ -120,6 +97,8 @@ router.post('/login/', validation, async (req, res) => {
 // needs rework:3
 router.delete('/logout', authorization, async (req, res) => {
     try {
+        const refreshToken = req.cookies.refreshToken;
+        await pool.query('DELETE FROM refreshTokens WHERE token=$1', [refreshToken]);
         res.cookie('refreshToken', '', { maxAge: 0 });
         res.status(200).json('logout');
     } catch (err) {

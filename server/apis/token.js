@@ -13,24 +13,23 @@ require('dotenv').config();
 // And refresh token must be in db too, when is new refresh token called all other user refresh tokens are deleted
 // So thats the play for the auth!
 router.post('/refresh_token', async (req, res) => {
+
     try {
         const refreshToken = req.cookies.refreshToken;
-        
 
-        jwt.verify(refreshToken, process.env.SECRET2, async (err, user) => {
-            if(err) {
-                res.status(403).json('Not Authorized!');
-            }else{
-                const checkToken = await pool.query('SELECT * FROM refreshTokens WHERE token=$1',[refreshToken])
+        if (!refreshToken) {
+            return res.status(403).json('Not Authorized!');
+        }
 
-                if(checkToken.rows.length===1){
-                    const accessToken  = generateAccessToken(user.user);
-                    res.json({accessToken});
-                }else{
-                    res.status(403).json('Not Authorized!');
-                }
-            }
-        });
+        const { user } = jwt.verify(refreshToken, process.env.SECRET2);
+        const checkToken = await pool.query('SELECT * FROM refreshTokens WHERE token=$1', [refreshToken]);
+
+        if (checkToken.rows.length === 0) {
+            return res.status(403).json('Not Authorized!');
+        }
+
+        const accessToken = generateAccessToken(user);
+        res.json({ accessToken });
 
     } catch (err) {
         console.log(err.message);
