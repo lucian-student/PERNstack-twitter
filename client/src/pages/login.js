@@ -23,7 +23,6 @@ function Login() {
             })
             .then(res => {
                 setAccessToken(res.data.accessToken);
-                console.log(res.data.accessToken)
             })
             .catch(err => console.error(err));
     }

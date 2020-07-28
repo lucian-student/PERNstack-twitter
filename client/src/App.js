@@ -18,7 +18,6 @@ function App() {
         })
         .then(res => {
           setAccessToken(res.data.accessToken);
-          console.log(res.data.accessToken);
           setLoading(false);
         })
         .catch(err => {
