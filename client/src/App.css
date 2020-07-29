@@ -1,5 +1,6 @@
 .navigation{
   background:linear-gradient(45deg,#000000 30%, #F2F2F2 90%);
+  overflow: hidden;
 }
 .rightMenu{
   float: right;

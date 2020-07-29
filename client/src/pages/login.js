@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment,useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { setAccessToken } from '../utils/accessToken';
 import {transport} from '../axios/cookieAxios';
@@ -10,10 +10,12 @@ import {
     FormLabel,
     InputLabel
 } from '@material-ui/core';
+import {AuthContext} from '../context/auth';
 
 function Login() {
     const regEx = /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$/;
     const { register, handleSubmit, errors } = useForm();
+    const {loginUser} = useContext(AuthContext);
     async function handleLogin(data) {
         const { email, password } = data;
         return await transport
@@ -23,6 +25,7 @@ function Login() {
             })
             .then(res => {
                 setAccessToken(res.data.accessToken);
+                loginUser();
             })
             .catch(err => console.error(err));
     }

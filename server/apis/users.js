@@ -10,9 +10,20 @@ require('dotenv').config();
 //user calls
 
 //get 
-router.get('/is-verify', authorization, async (req, res) => {
+router.get('/me', authorization, async (req, res) => {
     try {
-        res.json(true);
+        const user = req.user;
+        if (!user) {
+            return res.status(403).json('Not Authorized!');
+        }
+        const me = await pool.query('SELECT name, email FROM  users WHERE user_id=$1', [user]);
+
+        if (me.rows.length === 1) {
+            return res.json(me.rows[0]);
+        } else {
+            res.status(403).json(' User doesnt exist!');
+        }
+
     } catch (err) {
         console.log(err.message);
         res.status(500).send('Server Error');

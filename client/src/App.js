@@ -1,15 +1,18 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState, useContext } from 'react';
 import './App.css';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Switch } from 'react-router-dom';
 import Menu from './components/menu';
 import Login from './pages/login';
 import Register from './pages/register';
 import Main from './pages/main';
-import { AuthProvider } from './context/auth';
+import { AuthContext } from './context/auth';
 import { setAccessToken } from './utils/accessToken';
 import { transport } from './axios/cookieAxios';
+import NotAuthRoute from './utils/notAuthRoute';
+import AuthRoute from './utils/authRoute';
 function App() {
   const [loading, setLoading] = useState(true);
+  const { loginUser } = useContext(AuthContext);
   useEffect(() => {
     const reciveData = async () => {
       await transport
@@ -18,30 +21,30 @@ function App() {
         })
         .then(res => {
           setAccessToken(res.data.accessToken);
+          loginUser();
           setLoading(false);
         })
         .catch(err => {
-          console.error(err.message)
+          console.error(err.message);
           setLoading(false);
         });
     };
     reciveData();
-  }, []);
+
+  }, [loginUser]);
   if (loading) {
     return <div>Loading ...</div>
   }
   return (
     <Fragment>
-      <AuthProvider>
-        <Router>
-          <Menu />
-          <Switch>
-            <Route exact path='/main' component={Main} />
-            <Route exact path='/' component={Login} />
-            <Route exact path='/Register' component={Register} />
-          </Switch>
-        </Router>
-      </AuthProvider>
+      <Router>
+        <Menu />
+        <Switch>
+          <AuthRoute exact path='/main' component={Main} />
+          <NotAuthRoute exact path='/' component={Login} />
+          <NotAuthRoute exact path='/Register' component={Register} />
+        </Switch>
+      </Router>
     </Fragment>
   );
 }
