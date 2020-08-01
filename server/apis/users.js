@@ -55,7 +55,8 @@ router.post('/register/', validation, async (req, res) => {
             // handle cookies
             res.cookie('refreshToken', refreshToken, {
                 httpOnly: true,
-                maxAge: 60 * 60 * 24 * 7 * 1000
+                maxAge: 60 * 60 * 24 * 7 * 1000,
+                path: '/token/refresh_token'
                 //secure:true
             });
             res.status(200).json({ accessToken });
@@ -87,7 +88,8 @@ router.post('/login/', validation, async (req, res) => {
                 // handle cookies
                 res.cookie('refreshToken', refreshToken, {
                     httpOnly: true,
-                    maxAge: 60 * 60 * 24 * 7 * 1000
+                    maxAge: 60 * 60 * 24 * 7 * 1000,
+                    path: '/token/refresh_token'
                     // secure:true
                 });
                 res.status(200).json({ accessToken });
@@ -108,9 +110,13 @@ router.post('/login/', validation, async (req, res) => {
 // needs rework:3
 router.delete('/logout', authorization, async (req, res) => {
     try {
-        const refreshToken = req.cookies.refreshToken;
-        await pool.query('DELETE FROM refreshTokens WHERE token=$1', [refreshToken]);
-        res.cookie('refreshToken', '', { maxAge: 0 });
+        await pool.query('DELETE FROM refreshTokens WHERE user_id=$1', [req.user]);
+        res.cookie('refreshToken', '', {
+            maxAge: 0,
+            httpOnly: true,
+            path: '/token/refresh_token'
+            //secure:true
+        });
         res.status(200).json('logout');
     } catch (err) {
         console.log(err.message);

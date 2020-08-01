@@ -11,6 +11,7 @@ app.use(cookieParser());
 app.use(express.json());
 app.use('/users',require('./apis/users'));
 app.use('/tweets',require('./apis/tweets'));
+app.use('/comments',require('./apis/comments'));
 app.use('/token',require('./apis/token'));
 //get
 

@@ -20,12 +20,14 @@ CREATE TABLE tweets (
     tweet_id serial PRIMARY KEY,
     user_id INT NOT NULL,
     content VARCHAR(255) NOT NULL,
+    num_of_likes BIGINT NOT NULL,
+    num_of_tweets BIGINT NOT NULL,
     FOREIGN KEY (user_id)
       REFERENCES users (user_id)
   
 );
 
-CREATE TABLE tweetLikes (
+CREATE TABLE tweetlikes (
     like_id serial PRIMARY KEY,
     user_id INT NOT NULL,
     tweet_id INT NOT NULL,
@@ -40,13 +42,14 @@ CREATE TABLE comments (
     user_id INT NOT NULL,
     tweet_id INT NOT NULL,
     content VARCHAR(255) NOT NULL,
+    num_of_likes BIGINT NOT NULL,
      FOREIGN KEY (user_id)
       REFERENCES users (user_id),
     FOREIGN KEY (tweet_id)
       REFERENCES tweets (tweet_id)
 );
 
-CREATE TABLE commentLikes (
+CREATE TABLE commentlikes (
     like_id serial PRIMARY KEY,
     user_id INT NOT NULL,
     comment_id INT NOT NULL,
@@ -56,7 +59,7 @@ CREATE TABLE commentLikes (
       REFERENCES comments (comment_id)
 );
 
-CREATE TABLE refreshTokens (
+CREATE TABLE refreshtokens (
   token_id serial PRIMARY KEY,
   user_id INT NOT NULL,
   token TEXT NOT NULL,

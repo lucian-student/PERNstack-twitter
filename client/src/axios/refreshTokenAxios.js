@@ -31,5 +31,3 @@ jwtTransport.interceptors.request.use(async function (config) {
     console.log(error.message);
     return Promise.reject(error);
 });
-
-
