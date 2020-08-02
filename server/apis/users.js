@@ -31,16 +31,19 @@ router.get('/me', authorization, async (req, res) => {
 });
 // post 
 router.post('/register/', validation, async (req, res) => {
+    const client = await pool.connect();
     try {
         const { name, email, password } = req.body.data;
-        const userCheck = await pool.query('SELECT * FROM users WHERE email=$1', [email]);
+        // start transaction
+        await client.query('BEGIN');
+        const userCheck = await client.query('SELECT * FROM users WHERE email=$1', [email]);
         if (userCheck.rows.length === 0) {
             // password hash
             const saltRound = 10;
             const salt = await bcrypt.genSalt(saltRound);
             const bcryptPassword = await bcrypt.hash(password, salt);
             //end of password hash
-            const newUser = await pool.query
+            const newUser = await client.query
                 ('INSERT INTO users (name,email,password,online) VALUES ($1,$2,$3,$4) RETURNING *',
                     [name, email, bcryptPassword, true]
                 );
@@ -48,7 +51,7 @@ router.post('/register/', validation, async (req, res) => {
             const accessToken = generateAccessToken(newUser.rows[0].user_id);
             //refresh token insert to database
             const refreshToken = generateRefreshToken(newUser.rows[0].user_id);
-            const newRefreshToken = await pool.query
+            const newRefreshToken = await client.query
                 ('INSERT INTO refreshTokens (user_id,token) VALUES ($1,$2) RETURNING *',
                     [newUser.rows[0].user_id, refreshToken]);
             const currentRefreshToken = newRefreshToken.rows[0].token;
@@ -59,20 +62,28 @@ router.post('/register/', validation, async (req, res) => {
                 path: '/token/refresh_token'
                 //secure:true
             });
+            await client.query('COMMIT');
             res.status(200).json({ accessToken });
         } else {
+            await client.query('ROLLBACK');
             res.status(401).json('User Exists');
         }
     } catch (err) {
+        await client.query('ROLLBACK');
         console.log(err.message);
         res.status(500).send('Server Error');
+    } finally {
+        client.release();
     }
 });
 
 router.post('/login/', validation, async (req, res) => {
+    const client = await pool.connect();
     try {
         const { email, password } = req.body.data;
-        const userCheck = await pool.query('SELECT * FROM users WHERE email=$1', [email]);
+        // start transaction
+        await client.query('BEGIN');
+        const userCheck = await client.query('SELECT * FROM users WHERE email=$1', [email]);
         if (userCheck.rows.length === 1) {
 
             const validPassword = await bcrypt.compare(password, userCheck.rows[0].password);
@@ -81,8 +92,8 @@ router.post('/login/', validation, async (req, res) => {
                 const accessToken = generateAccessToken(userCheck.rows[0].user_id);
                 const refreshToken = generateRefreshToken(userCheck.rows[0].user_id);
                 // delete all previous refresh tokens
-                const deleteTokens = await pool.query('DELETE FROM refreshTokens WHERE user_id=$1', [userCheck.rows[0].user_id]);
-                const newRefreshToken = await pool.query('INSERT INTO refreshTokens (user_id,token) VALUES ($1,$2) RETURNING *', [
+                const deleteTokens = await client.query('DELETE FROM refreshTokens WHERE user_id=$1', [userCheck.rows[0].user_id]);
+                const newRefreshToken = await client.query('INSERT INTO refreshTokens (user_id,token) VALUES ($1,$2) RETURNING *', [
                     userCheck.rows[0].user_id, refreshToken
                 ])
                 // handle cookies
@@ -92,16 +103,22 @@ router.post('/login/', validation, async (req, res) => {
                     path: '/token/refresh_token'
                     // secure:true
                 });
+                await client.query('COMMIT');
                 res.status(200).json({ accessToken });
             } else {
+                await client.query('ROLLBACK');
                 return res.status(401).send('Password doesnt match!');
             }
         } else {
+            await client.query('ROLLBACK');
             res.status(401).json('Somthing went wrong!');
         }
     } catch (err) {
+        await client.query('ROLLBACK');
         console.log(err.message);
         res.status(500).send('Server Error');
+    } finally {
+        client.release();
     }
 })
 //put

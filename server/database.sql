@@ -21,7 +21,7 @@ CREATE TABLE tweets (
     user_id INT NOT NULL,
     content VARCHAR(255) NOT NULL,
     num_of_likes BIGINT NOT NULL,
-    num_of_tweets BIGINT NOT NULL,
+    num_of_comments BIGINT NOT NULL,
     FOREIGN KEY (user_id)
       REFERENCES users (user_id)
   

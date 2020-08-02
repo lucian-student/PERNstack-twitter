@@ -24,7 +24,7 @@ router.get('/:page', authorization, async (req, res) => {
 router.post('/create_tweet', authorization, async (req, res) => {
     try {
         const newTweet =
-            await pool.query('INSERT INTO tweets (user_id,content,num_of_likes,num_of_tweets)' +
+            await pool.query('INSERT INTO tweets (user_id,content,num_of_likes,num_of_comments)' +
                 ' VALUES ($1,$2,$3,$4) RETURNING *',
                 [
                     req.user,
@@ -40,35 +40,44 @@ router.post('/create_tweet', authorization, async (req, res) => {
 });
 //add like
 router.post('/like_tweet/:id', authorization, async (req, res) => {
+    const client = await pool.connect();
     try {
         const id = parseInt(req.params.id);
+        // begin transaction
+        await client.query('BEGIN');
+        // query
         const checkTweet =
-            await pool.query('SELECT like_id FROM tweetlikes WHERE user_id=$1 AND tweet_id=$2',
+            await client.query('SELECT like_id FROM tweetlikes WHERE user_id=$1 AND tweet_id=$2',
                 [
                     req.user,
                     id
                 ]);
         if (checkTweet.rows.length === 0) {
-
+            // insert
             const newLike =
-                await pool.query('INSERT INTO tweetlikes (user_id,tweet_id)' +
+                await client.query('INSERT INTO tweetlikes (user_id,tweet_id)' +
                     ' VALUES ($1,$2) RETURNING *', [
                     req.user,
                     id
                 ]);
-
+            // update
             const update =
-                await pool.query('UPDATE tweets SET num_of_likes = num_of_likes+1 WHERE tweet_id=$1',
+                await client.query('UPDATE tweets SET num_of_likes = num_of_likes+1 WHERE tweet_id=$1',
                     [
                         id
                     ]);
+            await client.query('COMMIT');
             return res.json(newLike.rows[0]);
         } else {
+            await client.query('COMMIT');
             return res.status(404).json('u already liked that tweet');
         }
     } catch (err) {
+        await client.query('ROLLBACK');
         console.log(err.message);
         res.status(500).send('Server Error');
+    }finally{
+        client.release();
     }
 });
 //put
