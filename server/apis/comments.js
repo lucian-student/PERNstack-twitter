@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const pool = require('../configuration/db');
 const authorization = require('../midelware/authorization');
-const { route } = require('./tweets');
+
 
 //get 
 // get comments of certain tweet
@@ -21,10 +21,13 @@ router.get('/:id', authorization, async (req, res) => {
 //post
 //create comment
 router.post('/create_comment/:id', authorization, async (req, res) => {
+    const client = await pool.connect();
     try {
         const id = req.params.id;
+        const tweet_id = req.body.data.id;
+        await client.query('BEGIN');
         const newComment =
-            await pool.query('INSERT INTO comments (user_id,tweet_id,content,num_of_likes)' +
+            await client.query('INSERT INTO comments (user_id,tweet_id,content,num_of_likes)' +
                 ' VALUES ($1,$2,$3,$4) RETURNING *',
                 [
                     req.user,
@@ -32,10 +35,19 @@ router.post('/create_comment/:id', authorization, async (req, res) => {
                     req.body.data.content,
                     0
                 ]);
+        const update =
+            await client.query('UPDATE tweets SET num_of_comments=num_of_comments+1 WHERE tweet_id=$1',
+                [
+                    tweet_id
+                ]);
+        await client.query('COMMIT');
         res.json(newComment.rows[0]);
     } catch (err) {
+        await client.query('ROLLBACK');
         console.log(err.message);
         res.status(500).send('Server Error');
+    } finally {
+        client.release();
     }
 });
 //like comment
@@ -69,7 +81,7 @@ router.post('/like_comment/:id', authorization, async (req, res) => {
             await client.query('COMMIT');
             return res.json(newLike.rows[0]);
         } else {
-            await client.query('COMMIT');
+            await client.query('ROLLBACK');
             return res.status(404).json('u already liked that tweet');
         }
     } catch (err) {

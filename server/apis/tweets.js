@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const pool = require('../configuration/db');
 const authorization = require('../midelware/authorization');
-const { json } = require('express');
+const tweetOwner = require('../midelware/tweetOwner');
 // to all request add Authorization midlewear after testing
 //get
 // get all tweets,likes,comments,comment likes + pagination by 10 tweets
@@ -69,25 +69,87 @@ router.post('/like_tweet/:id', authorization, async (req, res) => {
             await client.query('COMMIT');
             return res.json(newLike.rows[0]);
         } else {
-            await client.query('COMMIT');
+            await client.query('ROLLBACK');
             return res.status(404).json('u already liked that tweet');
         }
     } catch (err) {
         await client.query('ROLLBACK');
         console.log(err.message);
         res.status(500).send('Server Error');
-    }finally{
+    } finally {
         client.release();
     }
 });
 //put
 //update tweet content
-//update comment content
+/*const setUser = async (req, res, next) => {
+    try {
+        req.user = 5;
+    } catch (err) {
+        console.log(err.message);
+        res.status(500).send('Server Error');
+    }
+    next();
+};*/
+router.put('/update_tweet/:id', [authorization, tweetOwner], async (req, res) => {
+    try {
+        const id = parseInt(req.params.id);
+        const updatedTweet =
+            await pool.query('UPDATE tweets SET content=$1 WHERE tweet_id=$2 RETURNING *',
+                [
+                    req.body.content,
+                    id
+                ]);
+        res.json(updatedTweet.rows[0]);
 
+    } catch (err) {
+        console.log(err.message);
+        res.status(500).send('Server Error');
+    }
+});
 //delete
 //delete tweet
-//delete comment
-//delete like of tweet
-//delete like of comment
+router.delete('/delete_tweet/:id', [authorization, tweetOwner], async (req, res) => {
+    try {
+        const id = parseInt(req.params.id);
+
+        const deleteTweet =
+            await pool.query('DELETE FROM tweets WHERE tweet_id=$1',
+                [
+                    id
+                ]);
+        res.json(deleteTweet.rows[0]);
+    } catch (error) {
+        console.log(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+//delete like of 
+router.delete('/delete_like/:id', authorization, async (req, res) => {
+    try {
+        const id = req.params.id;
+        const checkLike =
+            await pool.query('SELECT * FROM tweetlikes WHERE tweet_id=$1 AND user_id=$2',
+                [
+                    id,
+                    req.user
+                ]);
+        if (checkLike.rows.length === 1) {
+            const deleteLike =
+                await pool.query('DELETE FROM tweetlikes WHERE tweet_id=$1 AND user_id=$2 RETURNING *',
+                    [
+                        id,
+                        req.user
+                    ]);
+        } else {
+            return res.status(403).json('Not Authorized!');
+        }
+    } catch (error) {
+        console.log(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
 
 module.exports = router;

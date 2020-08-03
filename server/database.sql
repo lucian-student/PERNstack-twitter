@@ -24,7 +24,7 @@ CREATE TABLE tweets (
     num_of_comments BIGINT NOT NULL,
     FOREIGN KEY (user_id)
       REFERENCES users (user_id)
-  
+        ON DELETE CASCADE
 );
 
 CREATE TABLE tweetlikes (
@@ -32,9 +32,11 @@ CREATE TABLE tweetlikes (
     user_id INT NOT NULL,
     tweet_id INT NOT NULL,
     FOREIGN KEY (user_id)
-      REFERENCES users (user_id),
+      REFERENCES users (user_id)
+        ON DELETE CASCADE,
     FOREIGN KEY (tweet_id)
-      REFERENCES tweets (tweet_id)
+      REFERENCES tweets (tweet_id) 
+        ON DELETE CASCADE
 );
 
 CREATE TABLE comments (
@@ -43,10 +45,12 @@ CREATE TABLE comments (
     tweet_id INT NOT NULL,
     content VARCHAR(255) NOT NULL,
     num_of_likes BIGINT NOT NULL,
-     FOREIGN KEY (user_id)
-      REFERENCES users (user_id),
+    FOREIGN KEY (user_id)
+      REFERENCES users (user_id)  
+        ON DELETE CASCADE,
     FOREIGN KEY (tweet_id)
-      REFERENCES tweets (tweet_id)
+      REFERENCES tweets (tweet_id)  
+        ON DELETE CASCADE
 );
 
 CREATE TABLE commentlikes (
@@ -54,9 +58,11 @@ CREATE TABLE commentlikes (
     user_id INT NOT NULL,
     comment_id INT NOT NULL,
     FOREIGN KEY (user_id)
-      REFERENCES users (user_id),
+      REFERENCES users (user_id)  
+        ON DELETE CASCADE,
     FOREIGN KEY (comment_id)
-      REFERENCES comments (comment_id)
+      REFERENCES comments (comment_id) 
+        ON DELETE CASCADE
 );
 
 CREATE TABLE refreshtokens (
@@ -64,7 +70,8 @@ CREATE TABLE refreshtokens (
   user_id INT NOT NULL,
   token TEXT NOT NULL,
   FOREIGN KEY (user_id)
-      REFERENCES users (user_id)
+      REFERENCES users (user_id) 
+        ON DELETE CASCADE
 );
 
 
