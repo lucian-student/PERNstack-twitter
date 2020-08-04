@@ -127,25 +127,42 @@ router.delete('/delete_tweet/:id', [authorization, tweetOwner], async (req, res)
 
 //delete like of 
 router.delete('/delete_like/:id', authorization, async (req, res) => {
+    const client = await pool.connect();
     try {
         const id = req.params.id;
+        await client.query('BEGIN');
         const checkLike =
-            await pool.query('SELECT * FROM tweetlikes WHERE tweet_id=$1 AND user_id=$2',
+            await client.query('SELECT * FROM tweetlikes WHERE tweet_id=$1 AND user_id=$2',
                 [
                     id,
                     req.user
                 ]);
         if (checkLike.rows.length === 1) {
             const deleteLike =
-                await pool.query('DELETE FROM tweetlikes WHERE tweet_id=$1 AND user_id=$2 RETURNING *',
+                await client.query('DELETE FROM tweetlikes WHERE tweet_id=$1 AND user_id=$2 RETURNING *',
                     [
                         id,
                         req.user
                     ]);
+            const updateTweet =
+                await client.query('UPDATE tweets SET num_of_likes=num_of_likes-1 WHERE tweet_id=$1 RETURNING *',
+                    [
+                        id
+                    ]);
+            await client.query('COMMIT');
+            const updateTweetRes = updateTweet.rows[0];
+            const deleteLikeRes = deleteLike.rows[0];
+            res.json({
+                tweet_id: updateTweetRes.tweet_id,
+                num_of_likes: updateTweetRes.num_of_likes,
+                like_id: deleteLikeRes.like_id
+            });
         } else {
+            await client.query('ROLLBACK');
             return res.status(403).json('Not Authorized!');
         }
     } catch (error) {
+        await client.query('ROLLBACK');
         console.log(err.message);
         res.status(500).send('Server Error');
     }
