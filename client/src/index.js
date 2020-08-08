@@ -4,11 +4,14 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { AuthProvider } from './context/auth';
+import { FilterProvider } from './context/filter';
 
 ReactDOM.render(
   <React.StrictMode>
     <AuthProvider>
-      <App />
+      <FilterProvider >
+        <App />
+      </FilterProvider>
     </AuthProvider>
   </React.StrictMode>,
   document.getElementById('root')

@@ -33,3 +33,17 @@
 .submitButton:hover{
   transform: scale(1.1);
 }
+.mainStyle{
+  background:linear-gradient(45deg,#F2F2F2 70%,#4ABB9E 20%);
+}
+.searchButtons{
+  background:linear-gradient(45deg,#4ABB9E 20%,#F2F2F2 70%);
+  width:50%;
+}
+.filterButton{
+  background:linear-gradient(45deg,#4ABB9E 20%,#F2F2F2 70%);
+  width:100%;
+}
+.filterCheckBox{
+  float: right;
+}

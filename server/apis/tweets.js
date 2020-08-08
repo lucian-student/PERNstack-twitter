@@ -17,10 +17,19 @@ router.get('/:page', authorization, async (req, res) => {
         res.status(500).send('Server Error');
     }
 });
-// get tweets by username with tweets,likes,comments,comment likes
+// get tweets by username with tweets,likes,comments,comment 
+router.get('/user_tweets/:id', authorization, async (req, res) => {
+    try {
+        user_id = req.params.id;
+        const tweets = await pool.query('SELECT * FROM tweets WHERE user_id=$1', [user_id]);
 
+        res.json(tweets.rows);
+    } catch (err) {
+        console.log(err.message);
+        res.status(500).send('Server Error');
+    }
+});
 //post
-//create tweet
 router.post('/create_tweet', authorization, async (req, res) => {
     try {
         const newTweet =

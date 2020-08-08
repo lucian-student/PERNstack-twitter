@@ -19,6 +19,7 @@ VALUES ('fikus','fikus@gmail.com','hesloJeVeslo',true);
 CREATE TABLE tweets (
     tweet_id serial PRIMARY KEY,
     user_id INT NOT NULL,
+    username VARCHAR(255) NOT NULL,
     content VARCHAR(255) NOT NULL,
     num_of_likes BIGINT NOT NULL,
     num_of_comments BIGINT NOT NULL,
@@ -42,6 +43,7 @@ CREATE TABLE tweetlikes (
 CREATE TABLE comments (
     comment_id serial PRIMARY KEY,
     user_id INT NOT NULL,
+    username VARCHAR(255) NOT NULL,
     tweet_id INT NOT NULL,
     content VARCHAR(255) NOT NULL,
     num_of_likes BIGINT NOT NULL,

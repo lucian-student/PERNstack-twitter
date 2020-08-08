@@ -34,3 +34,7 @@ export function ValidateUnneceserrySpaceUsage(data) {
     console.log(valid);
     return valid;
 };
+
+export function ValidateEmptiness(data) {
+    return String(data).trim().length > 0;
+}

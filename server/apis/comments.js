@@ -2,8 +2,6 @@ const router = require('express').Router();
 const pool = require('../configuration/db');
 const authorization = require('../midelware/authorization');
 const commentOwner = require('../midelware/commentOwner');
-
-
 //get 
 // get comments of certain tweet
 router.get('/:id', authorization, async (req, res) => {
@@ -56,9 +54,7 @@ router.post('/like_comment/:id', async (req, res) => {
     const client = await pool.connect();
     try {
         const id = req.params.id;
-        //begin transaction
         await client.query('BEGIN');
-        // transaction logic
         const checkComment =
             await client.query('SELECT like_id FROM commentlikes WHERE user_id=$1 AND comment_id=$2',
                 [
@@ -66,14 +62,12 @@ router.post('/like_comment/:id', async (req, res) => {
                     id
                 ]);
         if (checkComment.rows.length === 0) {
-            // insert
             const newLike =
                 await client.query('INSERT INTO commentlikes (user_id,comment_id)' +
                     ' VALUES ($1,$2) RETURNING *', [
                     req.user,
                     id
                 ]);
-            // update
             const update =
                 await client.query('UPDATE comments SET num_of_likes = num_of_likes+1 WHERE comment_id=$1',
                     [
@@ -93,7 +87,6 @@ router.post('/like_comment/:id', async (req, res) => {
         client.release();
     }
 });
-//
 /*const setUser = async (req, res, next) => {
     try {
         req.user = 5;
@@ -119,7 +112,6 @@ router.put('/update_comment/:id', [authorization, commentOwner], async (req, res
         res.status(500).send('Server Error');
     }
 });
-
 //delete
 router.delete('/delete_comment/:id', [authorization, commentOwner], async (req, res) => {
     const client = await pool.connect();
@@ -151,7 +143,6 @@ router.delete('/delete_comment/:id', [authorization, commentOwner], async (req, 
         client.release();
     }
 });
-
 router.delete('/delete_like/:id', authorization, async (req, res) => {
     const client = await pool.connect();
     try {
