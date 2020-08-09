@@ -5,6 +5,7 @@ module.exports = async (req, res, next) => {
     const authorization = req.headers['authorization'];
 
     if (!authorization) {
+        console.log(authorization);
         return res.status(403).json('Not Authorized!');
     }
 

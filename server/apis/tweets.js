@@ -6,7 +6,7 @@ const tweetOwner = require('../midelware/tweetOwner');
 //get
 // get all tweets,likes,comments,comment likes + pagination by 10 tweets
 // zmena, like bude jako cislo a bude mit vlastni table, ktery se nebude queriovat jenom tweety
-router.get('/:page', authorization, async (req, res) => {
+router.get('/general/:page', authorization, async (req, res) => {
     try {
         const page = parseInt(req.params.page) * 10;
         const tweets = await pool.query('SELECT * FROM tweets OFFSET $1 LIMIT 10', [page]);
@@ -18,11 +18,10 @@ router.get('/:page', authorization, async (req, res) => {
     }
 });
 // get tweets by username with tweets,likes,comments,comment 
-router.get('/user_tweets/:id', authorization, async (req, res) => {
+router.get('/user', authorization, async (req, res) => {
     try {
-        user_id = req.params.id;
-        const tweets = await pool.query('SELECT * FROM tweets WHERE user_id=$1', [user_id]);
-
+        const page = parseInt(req.query.page) * 10;
+        const tweets = await pool.query('SELECT * FROM tweets WHERE user_id=$1 OFFSET $2 LIMIT 10', [req.query.user_id, page]);
         res.json(tweets.rows);
     } catch (err) {
         console.log(err.message);
@@ -88,6 +87,10 @@ router.post('/like_tweet/:id', authorization, async (req, res) => {
     } finally {
         client.release();
     }
+});
+
+router.get('/get_hello', async (req, res) => {
+    res.send(req.query);
 });
 //put
 //update tweet content

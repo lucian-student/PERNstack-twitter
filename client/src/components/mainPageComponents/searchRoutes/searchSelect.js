@@ -6,7 +6,7 @@ import {
 import { FilterContext } from '../../../context/filter';
 
 function SearchSelect({ properties: { setRoute, setSearching } }) {
-    const { filters, setFilters } = useContext(FilterContext);
+    const { filters, setFilters, requiredGeneral } = useContext(FilterContext);
 
     function handlechange(event) {
         switch (event.target.id) {
@@ -64,7 +64,8 @@ function SearchSelect({ properties: { setRoute, setSearching } }) {
                     Cancel Search
                 </Button>
                 <Button className='searchButtons'
-                    onClick={() => { setRoute('form') }}>
+                    onClick={() => { setRoute('form') }}
+                    disabled={requiredGeneral()}>
                     Next
                 </Button>
             </div>

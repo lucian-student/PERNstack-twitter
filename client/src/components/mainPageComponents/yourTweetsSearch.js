@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import {
     Button
 } from '@material-ui/core';
-import YourTweetSelect from './searchRoutes/yourSearchSelect';
-import YourTweetForm from './searchRoutes/yourSearchForm';
+import YourSearchSelect from './searchRoutes/yourSearchSelect';
 import YourSearchForm from './searchRoutes/yourSearchForm';
 function YourTweetSearch() {
     const [route, setRoute] = useState('select');
@@ -16,7 +15,7 @@ function YourTweetSearch() {
                         <div>
                             {route === 'select' && (
                                 <div>
-                                    <YourTweetSelect properties={{
+                                    <YourSearchSelect properties={{
                                         setRoute,
                                         setSearching
                                     }} />
