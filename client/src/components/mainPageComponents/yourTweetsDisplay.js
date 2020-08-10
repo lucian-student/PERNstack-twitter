@@ -8,20 +8,19 @@ import { yourDefaultQuery } from '../../queries/yourTweetsQueries/defaultYourQue
 import { AuthContext } from '../../context/auth';
 function YourTweetsDisplay() {
     const [tweets, setTweets] = useState(null);
-    const [page, setPage] = useState(0);
-    const { yourQuery } = useContext(FilterContext);
+    const { yourQuery, yourPage, setYourPage } = useContext(FilterContext);
     const { currentUser: { user_id } } = useContext(AuthContext);
     useEffect(() => {
         switch (yourQuery) {
             case 'general':
                 // code block
-                yourDefaultQuery(user_id, page, setTweets);
+                yourDefaultQuery(user_id, yourPage, setTweets);
                 break;
             default:
                 console.log('failed');
         }
 
-    }, [page, yourQuery]);
+    }, [yourPage, yourQuery, user_id]);
     return (
         <div>
             {tweets && (
@@ -37,10 +36,10 @@ function YourTweetsDisplay() {
 
                     </div>
                     <div>
-                        {page > 0 ? (
+                        {yourPage > 0 ? (
                             <Button style={{ width: '50%' }}
-                                onClick={() => { setPage(page - 1) }}>
-                                Previous Page {page - 1}
+                                onClick={() => { setYourPage(yourPage - 1) }}>
+                                Previous Page {yourPage - 1}
                             </Button>
                         ) : (
                                 <Button disabled style={{ width: '50%' }}>
@@ -53,8 +52,8 @@ function YourTweetsDisplay() {
                             </Button>
                         ) : (
                                 <Button style={{ width: '50%' }}
-                                    onClick={() => { setPage(page + 1) }}>
-                                    Next Page {page + 1}
+                                    onClick={() => { setYourPage(yourPage + 1) }}>
+                                    Next Page {yourPage + 1}
                                 </Button>
                             )}
                     </div>

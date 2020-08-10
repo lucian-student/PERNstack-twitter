@@ -10,19 +10,18 @@ import { generalQuery } from '../../queries/generalTweetsQuery/defaultGeneralQue
 
 function GeneralTweetsDisplay() {
     const [tweets, setTweets] = useState(null);
-    const [page, setPage] = useState(0);
-    const { query } = useContext(FilterContext);
+    const { query, generalPage, setGeneralPage } = useContext(FilterContext);
     useEffect(() => {
         switch (query) {
             case 'general':
                 // code block
-                generalQuery(page, setTweets);
+                generalQuery(generalPage, setTweets);
                 break;
             default:
                 console.log('failed');
         }
 
-    }, [page, query]);
+    }, [generalPage, query]);
 
     return (
         <div>
@@ -40,10 +39,10 @@ function GeneralTweetsDisplay() {
 
                     </div>
                     <div>
-                        {page > 0 ? (
+                        {generalPage > 0 ? (
                             <Button style={{ width: '50%' }}
-                                onClick={() => { setPage(page - 1) }}>
-                                Previous Page {page - 1}
+                                onClick={() => { setGeneralPage(generalPage - 1) }}>
+                                Previous Page {generalPage - 1}
                             </Button>
                         ) : (
                                 <Button disabled style={{ width: '50%' }}>
@@ -56,8 +55,8 @@ function GeneralTweetsDisplay() {
                             </Button>
                         ) : (
                                 <Button style={{ width: '50%' }}
-                                    onClick={() => { setPage(page + 1) }}>
-                                    Next Page {page + 1}
+                                    onClick={() => { setGeneralPage(generalPage + 1) }}>
+                                    Next Page {generalPage + 1}
                                 </Button>
                             )}
                     </div>

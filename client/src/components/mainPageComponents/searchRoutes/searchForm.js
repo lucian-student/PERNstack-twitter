@@ -16,7 +16,20 @@ function SearchForm({ properties: { setRoute, setSearching } }) {
 
     async function onSubmit(data) {
         console.log(data);
-        //some query
+        // setPage to 0 than set query
+        if (data.username) {
+            if (data.comments) {
+                console.log('username comments');
+            } else if (data.likes) {
+                console.log('username likes');
+            } else {
+                console.log('username');
+            }
+        } else if (data.comments) {
+            console.log('comments');
+        } else if (data.likes) {
+            console.log('likes');
+        }
         setRoute('select');
         setSearching(false);
     }

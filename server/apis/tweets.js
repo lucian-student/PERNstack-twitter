@@ -32,10 +32,11 @@ router.get('/user', authorization, async (req, res) => {
 router.post('/create_tweet', authorization, async (req, res) => {
     try {
         const newTweet =
-            await pool.query('INSERT INTO tweets (user_id,content,num_of_likes,num_of_comments)' +
+            await pool.query('INSERT INTO tweets (user_id,username,content,num_of_likes,num_of_comments)' +
                 ' VALUES ($1,$2,$3,$4) RETURNING *',
                 [
                     req.user,
+                    req.body.data.username,
                     req.body.data.content,
                     0,
                     0

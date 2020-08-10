@@ -16,6 +16,11 @@ function YourSearchForm({ properties: { setRoute, setSearching } }) {
     async function onSubmit(data) {
         console.log(data);
         //some query
+        if (data.likes) {
+            console.log('likes');
+        } else if (data.comments) {
+            console.log('comments');
+        }
         setRoute('select');
         setSearching(false);
     }

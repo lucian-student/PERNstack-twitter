@@ -26,10 +26,11 @@ router.post('/create_comment/:id', authorization, async (req, res) => {
         const tweet_id = req.body.data.id;
         await client.query('BEGIN');
         const newComment =
-            await client.query('INSERT INTO comments (user_id,tweet_id,content,num_of_likes)' +
-                ' VALUES ($1,$2,$3,$4) RETURNING *',
+            await client.query('INSERT INTO comments (user_id,username,tweet_id,content,num_of_likes)' +
+                ' VALUES ($1,$2,$3,$4,$5) RETURNING *',
                 [
                     req.user,
+                    req.body.data.username,
                     id,
                     req.body.data.content,
                     0

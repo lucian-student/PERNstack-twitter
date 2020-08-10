@@ -12,6 +12,7 @@ export const FilterProvider = ({ children }) => {
         return !filters.username && !filters.num_of_comments && !filters.num_of_likes;
     }
     const [query, setQuery] = useState('general');
+    const [generalPage, setGeneralPaga] = useState(0);
 
     const [yourFilters, setYourFilters] = useState({
         num_of_likes: false,
@@ -23,6 +24,7 @@ export const FilterProvider = ({ children }) => {
     }
 
     const [yourQuery, setYourQuery] = useState('general');
+    const [yourPage, setYourPage] = useState(0);
 
     return (
         <FilterContext.Provider
@@ -36,7 +38,11 @@ export const FilterProvider = ({ children }) => {
                 yourQuery,
                 setYourQuery,
                 requiredGeneral,
-                required
+                required,
+                generalPage,
+                setGeneralPaga,
+                yourPage,
+                setYourPage
             }}>
             {children}
         </FilterContext.Provider>
