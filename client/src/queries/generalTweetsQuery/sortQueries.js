@@ -1,6 +1,5 @@
 import { jwtTransport } from '../../axios/refreshTokenAxios';
 import { getAcessToken } from '../../utils/accessToken';
-
 // tweet_queries
 // tweets by likes
 // variables: sortValue and page
@@ -36,7 +35,7 @@ export const sortByComments = async (sortValue, page, setTweets) => {
             }
         })
         .then(res => {
-            setTweets(res.data);
+            setTweets(res.data);           
         })
         .catch(err => console.error(err));
 };

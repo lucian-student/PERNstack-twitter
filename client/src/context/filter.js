@@ -11,8 +11,12 @@ export const FilterProvider = ({ children }) => {
     const requiredGeneral = () => {
         return !filters.username && !filters.num_of_comments && !filters.num_of_likes;
     }
-    const [query, setQuery] = useState('general');
-    const [generalPage, setGeneralPaga] = useState(0);
+    const [generalQueryValues, setGeneralQueryValues] = useState({
+        query: 'general',
+        page: 0,
+        sortValue: null,
+        username: null
+    });
 
     const [yourFilters, setYourFilters] = useState({
         num_of_likes: false,
@@ -22,27 +26,26 @@ export const FilterProvider = ({ children }) => {
     const required = () => {
         return !yourFilters.num_of_likes && !yourFilters.num_of_comments;
     }
-
-    const [yourQuery, setYourQuery] = useState('general');
-    const [yourPage, setYourPage] = useState(0);
+    //FORM VALUE same rework as in general will folow!!!
+    const [yourQueryValues, setYourQueryValues] = useState({
+        query: 'general',
+        page: 0,
+        sortValue: null
+    });
 
     return (
         <FilterContext.Provider
             value={{
                 filters,
                 setFilters,
-                query,
-                setQuery,
                 yourFilters,
                 setYourFilters,
-                yourQuery,
-                setYourQuery,
                 requiredGeneral,
                 required,
-                generalPage,
-                setGeneralPaga,
-                yourPage,
-                setYourPage
+                generalQueryValues,
+                setGeneralQueryValues,
+                yourQueryValues,
+                setYourQueryValues
             }}>
             {children}
         </FilterContext.Provider>

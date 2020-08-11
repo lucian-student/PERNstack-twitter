@@ -6,21 +6,31 @@ import { FilterContext } from '../../context/filter';
 import TweetCard from '../mainPageComponents/tweetCard';
 import { yourDefaultQuery } from '../../queries/yourTweetsQueries/defaultYourQuery';
 import { AuthContext } from '../../context/auth';
+import { userByComments, userByLikes } from '../../queries/yourTweetsQueries/sortQueries';
 function YourTweetsDisplay() {
     const [tweets, setTweets] = useState(null);
-    const { yourQuery, yourPage, setYourPage } = useContext(FilterContext);
+    const { setYourQueryValues, yourQueryValues } = useContext(FilterContext);
     const { currentUser: { user_id } } = useContext(AuthContext);
     useEffect(() => {
-        switch (yourQuery) {
+        const { query, page, sortValue } = yourQueryValues;
+        switch (query) {
             case 'general':
-                // code block
-                yourDefaultQuery(user_id, yourPage, setTweets);
+                yourDefaultQuery(user_id, page, setTweets);
+                break;
+            case 'comments':
+                if (sortValue != null) {
+                    userByComments(user_id, sortValue, page, setTweets);
+                }
+                break;
+            case 'likes':
+                if (sortValue != null) {
+                    userByLikes(user_id, sortValue, page, setTweets);
+                }
                 break;
             default:
                 console.log('failed');
         }
-
-    }, [yourPage, yourQuery, user_id]);
+    }, [yourQueryValues, user_id]);
     return (
         <div>
             {tweets && (
@@ -36,10 +46,15 @@ function YourTweetsDisplay() {
 
                     </div>
                     <div>
-                        {yourPage > 0 ? (
+                        {yourQueryValues.page > 0 ? (
                             <Button style={{ width: '50%' }}
-                                onClick={() => { setYourPage(yourPage - 1) }}>
-                                Previous Page {yourPage - 1}
+                                onClick={() => {
+                                    setYourQueryValues({
+                                        ...yourQueryValues,
+                                        page: yourQueryValues.page - 1
+                                    });
+                                }}>
+                                Previous Page {yourQueryValues.page - 1}
                             </Button>
                         ) : (
                                 <Button disabled style={{ width: '50%' }}>
@@ -52,8 +67,13 @@ function YourTweetsDisplay() {
                             </Button>
                         ) : (
                                 <Button style={{ width: '50%' }}
-                                    onClick={() => { setYourPage(yourPage + 1) }}>
-                                    Next Page {yourPage + 1}
+                                    onClick={() => {
+                                        setYourQueryValues({
+                                            ...yourQueryValues,
+                                            page: yourQueryValues.page + 1
+                                        });
+                                    }}>
+                                    Next Page {yourQueryValues.page + 1}
                                 </Button>
                             )}
                     </div>

@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
     Button
 } from '@material-ui/core';
 import YourSearchSelect from './searchRoutes/yourSearchSelect';
 import YourSearchForm from './searchRoutes/yourSearchForm';
+import { FilterContext } from '../../context/filter';
 function YourTweetSearch() {
     const [route, setRoute] = useState('select');
     const [searching, setSearching] = useState(false);
+    const { yourQueryValues: { query }, setYourQueryValues } = useContext(FilterContext);
     return (
         <div>
             {searching ? (
@@ -35,10 +37,32 @@ function YourTweetSearch() {
                     </div>
                 </div>
             ) : (
-                    <Button className='filterButton'
-                        onClick={() => { setSearching(true) }}>
-                        Filter
-                    </Button>
+                    <div>
+                        {query !== 'general' ? (
+                            <div>
+                                <Button className='filterButton2'
+                                    onClick={() => { setSearching(true) }}>
+                                    Filter
+                                </Button>
+                                <Button className='filterButton2'
+                                    onClick={() => {
+                                        setYourQueryValues({
+                                            query: 'general',
+                                            page: 0,
+                                            sortValue: null
+                                        });
+                                    }}>
+                                    No Filters
+                                </Button>
+                            </div>
+                        ) : (
+                                <Button className='filterButton'
+                                    onClick={() => { setSearching(true) }}>
+                                    Filter
+                                </Button>
+                            )}
+
+                    </div>
                 )}
 
         </div>

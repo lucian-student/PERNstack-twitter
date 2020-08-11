@@ -11,24 +11,63 @@ import {
 } from '@material-ui/core';
 import { ValidateEmptiness } from '../../../utils/validators';
 function SearchForm({ properties: { setRoute, setSearching } }) {
-    const { filters } = useContext(FilterContext);
+    const { filters, setGeneralQueryValues } = useContext(FilterContext);
     const { register, handleSubmit, errors } = useForm();
 
+    function checkSortValue(data) {
+        if (data.comments) {
+            if (data.comments === 'heighest') {
+                return true;
+            } else {
+                return false
+            }
+        } else if (data.likes) {
+            if (data.likes === 'heighest') {
+                return true;
+            } else {
+                return false
+            }
+        }
+    }
+
     async function onSubmit(data) {
-        console.log(data);
-        // setPage to 0 than set query
         if (data.username) {
             if (data.comments) {
-                console.log('username comments');
+                setGeneralQueryValues({
+                    query: 'username_comments',
+                    sortValue: checkSortValue(data),
+                    page: 0,
+                    username: data.username
+                });
             } else if (data.likes) {
-                console.log('username likes');
+                setGeneralQueryValues({
+                    query: 'username_likes',
+                    sortValue: checkSortValue(data),
+                    page: 0,
+                    username: data.username
+                });
             } else {
-                console.log('username');
+                setGeneralQueryValues({
+                    sortValue: null,
+                    query: 'username',
+                    page: 0,
+                    username: data.username
+                });
             }
         } else if (data.comments) {
-            console.log('comments');
+            setGeneralQueryValues({
+                query: 'comments',
+                sortValue: checkSortValue(data),
+                page: 0,
+                username: null
+            });
         } else if (data.likes) {
-            console.log('likes');
+            setGeneralQueryValues({
+                query: 'likes',
+                sortValue: checkSortValue(data),
+                page: 0,
+                username: null
+            });
         }
         setRoute('select');
         setSearching(false);

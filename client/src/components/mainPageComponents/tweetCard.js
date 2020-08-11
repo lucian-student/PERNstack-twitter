@@ -9,8 +9,9 @@ import {
 } from '@material-ui/core';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import InsertCommentIcon from '@material-ui/icons/InsertComment'
+import { Link } from 'react-router-dom';
 
-function TweetCard({ tweet: { username, content, num_of_likes, num_of_comments } }) {
+function TweetCard({ tweet: { username, content, num_of_likes, num_of_comments, tweet_id } }) {
     return (
         <div>
             <Card>
@@ -31,9 +32,11 @@ function TweetCard({ tweet: { username, content, num_of_likes, num_of_comments }
                         {num_of_likes}
                     </div>
                     <div style={{ marginLeft: 'auto', marginRight: '25%' }}>
-                        <IconButton>
-                            <InsertCommentIcon />
-                        </IconButton>
+                        <Link to={`/tweetPage/${tweet_id}`}>
+                            <IconButton >
+                                <InsertCommentIcon />
+                            </IconButton>
+                        </Link>
                         {num_of_comments}
                     </div>
                 </CardActions>

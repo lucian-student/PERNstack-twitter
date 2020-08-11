@@ -10,16 +10,39 @@ import {
 import { ValidateEmptiness } from '../../../utils/validators';
 import { useForm } from 'react-hook-form';
 function YourSearchForm({ properties: { setRoute, setSearching } }) {
-    const { yourFilters } = useContext(FilterContext);
+    const { yourFilters, setYourQueryValues } = useContext(FilterContext);
     const { register, handleSubmit, errors } = useForm();
 
+    function checkSortValue(data) {
+        if (data.comments) {
+            if (data.comments === 'heighest') {
+                return true;
+            } else {
+                return false;
+            }
+        } else if (data.likes) {
+            if (data.likes === 'heighest') {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
     async function onSubmit(data) {
-        console.log(data);
         //some query
         if (data.likes) {
-            console.log('likes');
+            setYourQueryValues({
+                query: 'likes',
+                page: 0,
+                sortValue: checkSortValue(data)
+            });
         } else if (data.comments) {
-            console.log('comments');
+            setYourQueryValues({
+                query: 'comments',
+                page: 0,
+                sortValue: checkSortValue(data)
+            });
         }
         setRoute('select');
         setSearching(false);

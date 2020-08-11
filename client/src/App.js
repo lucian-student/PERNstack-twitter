@@ -5,6 +5,7 @@ import Menu from './components/menu';
 import Login from './pages/login';
 import Register from './pages/register';
 import Main from './pages/main';
+import TweetPage from './pages/tweetPage';
 import { AuthContext } from './context/auth';
 import { setAccessToken } from './utils/accessToken';
 import { transport } from './axios/cookieAxios';
@@ -41,6 +42,7 @@ function App() {
         <Menu />
         <Switch>
           <AuthRoute exact path='/main' component={Main} />
+          <AuthRoute exact path='/tweetPage/:commentId' component={TweetPage} />
           <NotAuthRoute exact path='/' component={Login} />
           <NotAuthRoute exact path='/Register' component={Register} />
         </Switch>

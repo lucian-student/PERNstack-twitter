@@ -7,21 +7,47 @@ import {
 } from '@material-ui/core';
 import { FilterContext } from '../../context/filter';
 import { generalQuery } from '../../queries/generalTweetsQuery/defaultGeneralQuery';
-
+import { sortByLikes, sortByComments, searchByUsername } from '../../queries/generalTweetsQuery/sortQueries';
+import { usernameAndComments, usernameAndLikes } from '../../queries/generalTweetsQuery/sortQueries2';
 function GeneralTweetsDisplay() {
     const [tweets, setTweets] = useState(null);
-    const { query, generalPage, setGeneralPage } = useContext(FilterContext);
+    const { generalQueryValues, setGeneralQueryValues } = useContext(FilterContext);
     useEffect(() => {
+        const { query, sortValue, page, username } = generalQueryValues;
         switch (query) {
             case 'general':
-                // code block
-                generalQuery(generalPage, setTweets);
+                generalQuery(page, setTweets);
+                break;
+            case 'username_comments':
+                if (sortValue != null && username) {
+                    usernameAndComments(username, sortValue, page, setTweets);
+                }
+                break;
+            case 'username_likes':
+                if (sortValue != null && username) {
+                    usernameAndLikes(username, sortValue, page, setTweets);
+                }
+                break;
+            case 'username':
+                if (username) {
+                    searchByUsername(username, page, setTweets);
+                }
+                break;
+            case 'comments':
+                if (sortValue != null) {
+                    sortByComments(sortValue, page, setTweets);
+                }
+                break;
+            case 'likes':
+                if (sortValue != null) {
+                    sortByLikes(sortValue, page, setTweets);
+                }
                 break;
             default:
                 console.log('failed');
         }
 
-    }, [generalPage, query]);
+    }, [generalQueryValues]);
 
     return (
         <div>
@@ -39,10 +65,15 @@ function GeneralTweetsDisplay() {
 
                     </div>
                     <div>
-                        {generalPage > 0 ? (
+                        {generalQueryValues.page > 0 ? (
                             <Button style={{ width: '50%' }}
-                                onClick={() => { setGeneralPage(generalPage - 1) }}>
-                                Previous Page {generalPage - 1}
+                                onClick={() => {
+                                    setGeneralQueryValues({
+                                        ...generalQueryValues,
+                                        page: generalQueryValues.page - 1
+                                    });
+                                }}>
+                                Previous Page {generalQueryValues.page - 1}
                             </Button>
                         ) : (
                                 <Button disabled style={{ width: '50%' }}>
@@ -55,8 +86,13 @@ function GeneralTweetsDisplay() {
                             </Button>
                         ) : (
                                 <Button style={{ width: '50%' }}
-                                    onClick={() => { setGeneralPage(generalPage + 1) }}>
-                                    Next Page {generalPage + 1}
+                                    onClick={() => {
+                                        setGeneralQueryValues({
+                                            ...generalQueryValues,
+                                            page: generalQueryValues.page + 1
+                                        });
+                                    }}>
+                                    Next Page {generalQueryValues.page + 1}
                                 </Button>
                             )}
                     </div>

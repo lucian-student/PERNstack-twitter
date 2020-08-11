@@ -12,7 +12,7 @@ router.get('/sort_by_likes', authorization, async (req, res) => {
             await pool.query('WITH vars as (SELECT $1::boolean as sort_value)' +
                 ' SELECT * FROM tweets ORDER BY (SELECT sort_value FROM vars)' +
                 ', case when (SELECT sort_value FROM vars) then num_of_likes end desc' +
-                ', case when (SELECT sort_value FROM vars) then num_of_likes end asc' +
+                ', case when not (SELECT sort_value FROM vars) then num_of_likes end asc' +
                 ' OFFSET $2 LIMIT 10',
                 [
                     sortValue,
@@ -33,7 +33,7 @@ router.get('/sort_by_comments', authorization, async (req, res) => {
             await pool.query('WITH vars as (SELECT $1::boolean as sort_value)' +
                 ' SELECT * FROM tweets ORDER BY (SELECT sort_value FROM vars)' +
                 ', case when (SELECT sort_value FROM vars) then num_of_comments end desc' +
-                ', case when (SELECT sort_value FROM vars) then num_of_comments end asc' +
+                ', case when not (SELECT sort_value FROM vars) then num_of_comments end asc' +
                 ' OFFSET $2 LIMIT 10',
                 [
                     sortValue,
@@ -70,10 +70,10 @@ router.get('/username_and_comments', authorization, async (req, res) => {
         const sortValue = req.query.sortValue;
         const tweets =
             await pool.query('WITH vars as (SELECT $1::boolean as sort_value)' +
-            ' SELECT * FROM tweets WHERE username=$2 ORDER BY (SELECT sort_value FROM vars)' +
-            ', case when (SELECT sort_value FROM vars) then num_of_comments end desc' +
-            ', case when (SELECT sort_value FROM vars) then num_of_comments end asc' +
-            ' OFFSET $3 LIMIT 10',
+                ' SELECT * FROM tweets WHERE username=$2 ORDER BY (SELECT sort_value FROM vars)' +
+                ', case when (SELECT sort_value FROM vars) then num_of_comments end desc' +
+                ', case when not (SELECT sort_value FROM vars) then num_of_comments end asc' +
+                ' OFFSET $3 LIMIT 10',
                 [
                     sortValue,
                     username,
@@ -93,10 +93,10 @@ router.get('/username_and_likes', authorization, async (req, res) => {
         const sortValue = req.query.sortValue;
         const tweets =
             await pool.query('WITH vars as (SELECT $1::boolean as sort_value)' +
-            ' SELECT * FROM tweets WHERE username=$2 ORDER BY (SELECT sort_value FROM vars)' +
-            ', case when (SELECT sort_value FROM vars) then num_of_likes end desc' +
-            ', case when (SELECT sort_value FROM vars) then num_of_likes end asc' +
-            ' OFFSET $3 LIMIT 10',
+                ' SELECT * FROM tweets WHERE username=$2 ORDER BY (SELECT sort_value FROM vars)' +
+                ', case when (SELECT sort_value FROM vars) then num_of_likes end desc' +
+                ', case when not (SELECT sort_value FROM vars) then num_of_likes end asc' +
+                ' OFFSET $3 LIMIT 10',
                 [
                     sortValue,
                     username,
@@ -116,10 +116,10 @@ router.get('/user_by_comments', authorization, async (req, res) => {
         const sortValue = req.query.sortValue;
         const tweets =
             await pool.query('WITH vars as (SELECT $1::boolean as sort_value)' +
-            ' SELECT * FROM tweets WHERE user_id=$2 ORDER BY (SELECT sort_value FROM vars)' +
-            ', case when (SELECT sort_value FROM vars) then num_of_comments end desc' +
-            ', case when (SELECT sort_value FROM vars) then num_of_comments end asc' +
-            ' OFFSET $3 LIMIT 10',
+                ' SELECT * FROM tweets WHERE user_id=$2 ORDER BY (SELECT sort_value FROM vars)' +
+                ', case when (SELECT sort_value FROM vars) then num_of_comments end desc' +
+                ', case when not (SELECT sort_value FROM vars) then num_of_comments end asc' +
+                ' OFFSET $3 LIMIT 10',
                 [
                     sortValue,
                     user_id,
@@ -138,11 +138,12 @@ router.get('/user_by_likes', async (req, res) => {
         const sortValue = req.query.sortValue;
         const tweets =
             await pool.query('WITH vars as (SELECT $1::boolean as sort_value)' +
-            ' SELECT * FROM tweets WHERE user_id=$2 ORDER BY (SELECT sort_value FROM vars)' +
-            ', case when (SELECT sort_value FROM vars) then num_of_likes end desc' +
-            ', case when (SELECT sort_value FROM vars) then num_of_likes end asc' +
-            ' OFFSET $3 LIMIT 10',
+                ' SELECT * FROM tweets WHERE user_id=$2 ORDER BY (SELECT sort_value FROM vars)' +
+                ', case when (SELECT sort_value FROM vars) then num_of_likes end desc' +
+                ', case when not (SELECT sort_value FROM vars) then num_of_likes end asc' +
+                ' OFFSET $3 LIMIT 10',
                 [
+                    sortValue,
                     user_id,
                     page
                 ]);

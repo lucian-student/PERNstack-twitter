@@ -44,6 +44,10 @@
   background:linear-gradient(45deg,#4ABB9E 20%,#F2F2F2 70%);
   width:100%;
 }
+.filterButton2{
+  background:linear-gradient(45deg,#4ABB9E 20%,#F2F2F2 70%);
+  width:50%;
+}
 .filterCheckBox{
   float: right;
 }
