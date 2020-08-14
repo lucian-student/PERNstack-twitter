@@ -5,12 +5,14 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { AuthProvider } from './context/auth';
 import { FilterProvider } from './context/filter';
-
+import { CommentsProvider } from './context/comments';
 ReactDOM.render(
   <React.StrictMode>
     <AuthProvider>
       <FilterProvider >
-        <App />
+        <CommentsProvider>
+          <App />
+        </CommentsProvider>
       </FilterProvider>
     </AuthProvider>
   </React.StrictMode>,

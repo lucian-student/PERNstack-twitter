@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { CommentsContext } from '../../context/comments';
 import {
     Card,
     CardHeader,
@@ -9,9 +10,9 @@ import {
 } from '@material-ui/core';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import InsertCommentIcon from '@material-ui/icons/InsertComment'
-import { Link } from 'react-router-dom';
+function TweetDisplay() {
+    const { tweet: { num_of_comments, num_of_likes, username, content } } = useContext(CommentsContext);
 
-function TweetCard({ tweet: { username, content, num_of_likes, num_of_comments, tweet_id } }) {
     return (
         <div>
             <Card>
@@ -23,20 +24,15 @@ function TweetCard({ tweet: { username, content, num_of_likes, num_of_comments, 
                         {content}
                     </Typography>
                 </CardContent>
-
                 <CardActions style={{ marginLeft: '20%', marginRight: '20%' }}>
                     <div>
-                        <IconButton >
+                        <IconButton>
                             <FavoriteIcon />
                         </IconButton>
                         {num_of_likes}
                     </div>
                     <div style={{ marginLeft: 'auto' }}>
-                        <Link to={`/tweetPage/${tweet_id}`}>
-                            <IconButton >
-                                <InsertCommentIcon />
-                            </IconButton>
-                        </Link>
+                        <InsertCommentIcon />
                         {num_of_comments}
                     </div>
                 </CardActions>
@@ -45,4 +41,4 @@ function TweetCard({ tweet: { username, content, num_of_likes, num_of_comments, 
     )
 }
 
-export default TweetCard;
+export default TweetDisplay;

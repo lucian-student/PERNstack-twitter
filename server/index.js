@@ -15,7 +15,8 @@ app.use('/users', require('./apis/users'));
 app.use('/tweets', require('./apis/tweets'));
 app.use('/comments', require('./apis/comments'));
 app.use('/token', require('./apis/token'));
-app.use('/tweet_queries', require('./apis/tweetQueries'))
+app.use('/tweet_queries', require('./apis/tweetQueries'));
+app.use('/comment_queries', require('./apis/commentQueries'));
 // socket io 
 io.on('connection', () => {
     console.log('socket connected');

@@ -42,7 +42,7 @@ function App() {
         <Menu />
         <Switch>
           <AuthRoute exact path='/main' component={Main} />
-          <AuthRoute exact path='/tweetPage/:commentId' component={TweetPage} />
+          <AuthRoute exact path='/tweetPage/:tweetId' component={TweetPage} />
           <NotAuthRoute exact path='/' component={Login} />
           <NotAuthRoute exact path='/Register' component={Register} />
         </Switch>

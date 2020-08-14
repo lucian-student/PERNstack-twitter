@@ -2,20 +2,6 @@ const router = require('express').Router();
 const pool = require('../configuration/db');
 const authorization = require('../midelware/authorization');
 const commentOwner = require('../midelware/commentOwner');
-//get 
-// get comments of certain tweet
-router.get('/:id', authorization, async (req, res) => {
-    try {
-        const id = req.params.id;
-        const comments = await pool.query('SELECT * FROM comments WHERE tweet_id=$1', [id]);
-
-        res.json(comments.rows);
-
-    } catch (err) {
-        console.log(err.message);
-        res.status(500).send('Server Error');
-    }
-});
 
 //post
 //create comment
