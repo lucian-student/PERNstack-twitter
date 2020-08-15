@@ -2,11 +2,14 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 module.exports = async (req, res, next) => {
-    const authorization = req.headers['authorization'];
+    let authorization = req.headers['authorization'];
 
     if (!authorization) {
-        console.log(authorization);
-        return res.status(403).json('Not Authorized!');
+        authorization = req.body.headers.Authorization;
+        if (!authorization) {
+            return res.status(403).json('Not Authorized!');
+        }
+        // on post request for some reson u need to get headers from req.body.headers.Authorization;
     }
 
     try {

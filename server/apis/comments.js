@@ -5,10 +5,9 @@ const commentOwner = require('../midelware/commentOwner');
 
 //post
 //create comment
-router.post('/create_comment/:id', authorization, async (req, res) => {
+router.post('/create_comment', authorization, async (req, res) => {
     const client = await pool.connect();
     try {
-        const id = req.params.id;
         const tweet_id = req.body.data.id;
         await client.query('BEGIN');
         const newComment =
@@ -17,7 +16,7 @@ router.post('/create_comment/:id', authorization, async (req, res) => {
                 [
                     req.user,
                     req.body.data.username,
-                    id,
+                    tweet_id,
                     req.body.data.content,
                     0
                 ]);

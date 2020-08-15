@@ -2,6 +2,10 @@ import React, { createContext, useState } from 'react';
 export const FilterContext = createContext();
 
 export const FilterProvider = ({ children }) => {
+    const [route, setRoute] = useState('general');
+
+    const [generalTweets, setGeneralTweets] = useState(null);
+
     const [filters, setFilters] = useState({
         username: false,
         num_of_likes: false,
@@ -18,6 +22,7 @@ export const FilterProvider = ({ children }) => {
         username: null
     });
 
+    const [yourTweets, setYourTweets] = useState(null);
     const [yourFilters, setYourFilters] = useState({
         num_of_likes: false,
         num_of_comments: false
@@ -45,7 +50,13 @@ export const FilterProvider = ({ children }) => {
                 generalQueryValues,
                 setGeneralQueryValues,
                 yourQueryValues,
-                setYourQueryValues
+                setYourQueryValues,
+                generalTweets,
+                setGeneralTweets,
+                yourTweets,
+                setYourTweets,
+                route,
+                setRoute
             }}>
             {children}
         </FilterContext.Provider>

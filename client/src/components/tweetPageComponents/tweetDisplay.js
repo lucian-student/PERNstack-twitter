@@ -11,7 +11,7 @@ import {
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import InsertCommentIcon from '@material-ui/icons/InsertComment'
 function TweetDisplay() {
-    const { tweet: { num_of_comments, num_of_likes, username, content } } = useContext(CommentsContext);
+    const { tweet: { num_of_likes, username, content }, comments } = useContext(CommentsContext);
 
     return (
         <div>
@@ -33,7 +33,7 @@ function TweetDisplay() {
                     </div>
                     <div style={{ marginLeft: 'auto' }}>
                         <InsertCommentIcon />
-                        {num_of_comments}
+                        {comments.length}
                     </div>
                 </CardActions>
             </Card>

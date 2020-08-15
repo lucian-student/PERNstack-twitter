@@ -48,13 +48,12 @@ router.post('/create_tweet', authorization, async (req, res) => {
     }
 });
 //add like
-router.post('/like_tweet/:id', authorization, async (req, res) => {
+
+router.post('/like_unlike_tweet', authorization, async (req, res) => {
     const client = await pool.connect();
     try {
-        const id = parseInt(req.params.id);
-        // begin transaction
+        const id = parseInt(req.body.data.id);
         await client.query('BEGIN');
-        // query
         const checkTweet =
             await client.query('SELECT like_id FROM tweetlikes WHERE user_id=$1 AND tweet_id=$2',
                 [
@@ -62,25 +61,43 @@ router.post('/like_tweet/:id', authorization, async (req, res) => {
                     id
                 ]);
         if (checkTweet.rows.length === 0) {
-            // insert
             const newLike =
                 await client.query('INSERT INTO tweetlikes (user_id,tweet_id)' +
                     ' VALUES ($1,$2) RETURNING *', [
                     req.user,
                     id
                 ]);
-            // update
             const update =
-                await client.query('UPDATE tweets SET num_of_likes = num_of_likes+1 WHERE tweet_id=$1',
+                await client.query('UPDATE tweets SET num_of_likes = num_of_likes+1 WHERE tweet_id=$1 RETURNING *',
                     [
                         id
                     ]);
             await client.query('COMMIT');
-            return res.json(newLike.rows[0]);
+            console.log()
+            res.json({
+                type: 'like',
+                num_of_likes: update.rows[0].num_of_likes
+            });
         } else {
-            await client.query('ROLLBACK');
-            return res.status(404).json('u already liked that tweet');
+            const deleteLike =
+                await client.query('DELETE FROM tweetlikes WHERE tweet_id=$1 AND user_id=$2 RETURNING *',
+                    [
+                        id,
+                        req.user
+                    ]);
+            const updateTweet =
+                await client.query('UPDATE tweets SET num_of_likes=num_of_likes-1 WHERE tweet_id=$1 RETURNING *',
+                    [
+                        id
+                    ]);
+            await client.query('COMMIT');
+            // const updateTweetRes = updateTweet.rows[0];
+            res.json({
+                type: 'unlike',
+                num_of_likes: updateTweet.rows[0].num_of_likes,
+            });
         }
+
     } catch (err) {
         await client.query('ROLLBACK');
         console.log(err.message);
@@ -90,20 +107,8 @@ router.post('/like_tweet/:id', authorization, async (req, res) => {
     }
 });
 
-router.get('/get_hello', async (req, res) => {
-    res.send(req.query);
-});
-//put
-//update tweet content
-/*const setUser = async (req, res, next) => {
-    try {
-        req.user = 5;
-    } catch (err) {
-        console.log(err.message);
-        res.status(500).send('Server Error');
-    }
-    next();
-};*/
+
+
 router.put('/update_tweet/:id', [authorization, tweetOwner], async (req, res) => {
     try {
         const id = parseInt(req.params.id);
@@ -137,49 +142,4 @@ router.delete('/delete_tweet/:id', [authorization, tweetOwner], async (req, res)
         res.status(500).send('Server Error');
     }
 });
-
-//delete like of 
-router.delete('/delete_like/:id', authorization, async (req, res) => {
-    const client = await pool.connect();
-    try {
-        const id = req.params.id;
-        await client.query('BEGIN');
-        const checkLike =
-            await client.query('SELECT * FROM tweetlikes WHERE tweet_id=$1 AND user_id=$2',
-                [
-                    id,
-                    req.user
-                ]);
-        if (checkLike.rows.length === 1) {
-            const deleteLike =
-                await client.query('DELETE FROM tweetlikes WHERE tweet_id=$1 AND user_id=$2 RETURNING *',
-                    [
-                        id,
-                        req.user
-                    ]);
-            const updateTweet =
-                await client.query('UPDATE tweets SET num_of_likes=num_of_likes-1 WHERE tweet_id=$1 RETURNING *',
-                    [
-                        id
-                    ]);
-            await client.query('COMMIT');
-            const updateTweetRes = updateTweet.rows[0];
-            const deleteLikeRes = deleteLike.rows[0];
-            res.json({
-                tweet_id: updateTweetRes.tweet_id,
-                num_of_likes: updateTweetRes.num_of_likes,
-                like_id: deleteLikeRes.like_id
-            });
-        } else {
-            await client.query('ROLLBACK');
-            return res.status(403).json('Not Authorized!');
-        }
-    } catch (error) {
-        await client.query('ROLLBACK');
-        console.log(err.message);
-        res.status(500).send('Server Error');
-    }
-});
-
-
 module.exports = router;

@@ -1,13 +1,15 @@
-import React, { Fragment, useContext, useState } from 'react';
+import React, { Fragment, useContext } from 'react';
 import { AuthContext } from '../context/auth';
 import YourTweets from '../components/mainPageComponents/yourTweets';
 import GeneralTweets from '../components/mainPageComponents/generalTweets';
 import {
     Button
 } from '@material-ui/core';
+import { FilterContext } from '../context/filter';
 function Main() {
     const { currentUser } = useContext(AuthContext);
-    const [route, setRoute] = useState('general');
+    const { route, setRoute } = useContext(FilterContext);
+
     return (
         <Fragment>
             <div style={{ display: "flex" }}>

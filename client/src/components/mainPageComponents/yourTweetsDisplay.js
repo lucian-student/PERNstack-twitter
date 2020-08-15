@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import {
     Button
 } from '@material-ui/core';
@@ -8,36 +8,35 @@ import { yourDefaultQuery } from '../../queries/yourTweetsQueries/defaultYourQue
 import { AuthContext } from '../../context/auth';
 import { userByComments, userByLikes } from '../../queries/yourTweetsQueries/sortQueries';
 function YourTweetsDisplay() {
-    const [tweets, setTweets] = useState(null);
-    const { setYourQueryValues, yourQueryValues } = useContext(FilterContext);
+    const { setYourQueryValues, yourQueryValues, yourTweets, setYourTweets } = useContext(FilterContext);
     const { currentUser: { user_id } } = useContext(AuthContext);
     useEffect(() => {
         const { query, page, sortValue } = yourQueryValues;
         switch (query) {
             case 'general':
-                yourDefaultQuery(user_id, page, setTweets);
+                yourDefaultQuery(user_id, page, setYourTweets);
                 break;
             case 'comments':
                 if (sortValue != null) {
-                    userByComments(user_id, sortValue, page, setTweets);
+                    userByComments(user_id, sortValue, page, setYourTweets);
                 }
                 break;
             case 'likes':
                 if (sortValue != null) {
-                    userByLikes(user_id, sortValue, page, setTweets);
+                    userByLikes(user_id, sortValue, page, setYourTweets);
                 }
                 break;
             default:
                 console.log('failed');
         }
-    }, [yourQueryValues, user_id]);
+    }, [yourQueryValues, user_id, setYourTweets]);
     return (
         <div>
-            {tweets && (
+            {yourTweets && (
                 <div>
                     <div >
                         <ul style={{ listStyleType: 'none', padding: 0 }}>
-                            {tweets.map(tweet => (
+                            {yourTweets.map(tweet => (
                                 <li key={tweet.tweet_id}>
                                     <TweetCard tweet={tweet} />
                                 </li>
@@ -61,7 +60,7 @@ function YourTweetsDisplay() {
                                     No Previous Page
                                 </Button>
                             )}
-                        {tweets.length < 10 ? (
+                        {yourTweets.length < 10 ? (
                             <Button disabled style={{ width: '50%' }}>
                                 No Next Page
                             </Button>
