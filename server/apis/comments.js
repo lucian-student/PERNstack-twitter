@@ -8,16 +8,16 @@ const commentOwner = require('../midelware/commentOwner');
 router.post('/create_comment', authorization, async (req, res) => {
     const client = await pool.connect();
     try {
-        const tweet_id = req.body.data.id;
+        const tweet_id = req.body.tweetId;
         await client.query('BEGIN');
         const newComment =
             await client.query('INSERT INTO comments (user_id,username,tweet_id,content,num_of_likes)' +
                 ' VALUES ($1,$2,$3,$4,$5) RETURNING *',
                 [
                     req.user,
-                    req.body.data.username,
+                    req.body.username,
                     tweet_id,
-                    req.body.data.content,
+                    req.body.content,
                     0
                 ]);
         const update =
@@ -36,10 +36,10 @@ router.post('/create_comment', authorization, async (req, res) => {
     }
 });
 //like comment
-router.post('/like_comment/:id', async (req, res) => {
+router.post('/like_unlike_comment', authorization, async (req, res) => {
     const client = await pool.connect();
     try {
-        const id = req.params.id;
+        const id = req.body.id;
         await client.query('BEGIN');
         const checkComment =
             await client.query('SELECT like_id FROM commentlikes WHERE user_id=$1 AND comment_id=$2',
@@ -55,15 +55,32 @@ router.post('/like_comment/:id', async (req, res) => {
                     id
                 ]);
             const update =
-                await client.query('UPDATE comments SET num_of_likes = num_of_likes+1 WHERE comment_id=$1',
+                await client.query('UPDATE comments SET num_of_likes = num_of_likes+1 WHERE comment_id=$1 RETURNING *',
                     [
                         id
                     ]);
             await client.query('COMMIT');
-            return res.json(newLike.rows[0]);
+            res.json({
+                type: 'like',
+                num_of_likes: update.rows[0].num_of_likes
+            });
         } else {
-            await client.query('ROLLBACK');
-            return res.status(404).json('u already liked that tweet');
+            const updateComment =
+                await client.query('UPDATE comments SET num_of_likes=num_of_likes-1 WHERE comment_id=$1 RETURNING *',
+                    [
+                        id
+                    ]);
+            const deleteLike =
+                await client.query('DELETE FROM commentlikes WHERE user_id=$1 AND comment_id=$2 RETURNING *',
+                    [
+                        req.user,
+                        id
+                    ]);
+            await client.query('COMMIT');
+            res.json({
+                type: 'unlike',
+                num_of_likes: updateComment.rows[0].num_of_likes
+            });
         }
     } catch (err) {
         await client.query('ROLLBACK');
@@ -89,7 +106,7 @@ router.put('/update_comment/:id', [authorization, commentOwner], async (req, res
         const updatedComment =
             await pool.query('UPDATE comments SET content=$1 WHERE comment_id=$2 RETURNING *',
                 [
-                    req.body.data.content,
+                    req.body.content,
                     id
                 ]);
         res.json(updatedComment.rows[0]);
@@ -118,8 +135,7 @@ router.delete('/delete_comment/:id', [authorization, commentOwner], async (req, 
                 ]);
         await client.query('COMMIT');
         res.json({
-            comment_id: id,
-            tweet_id: tweet_id
+            num_of_likes: updateTweet.rows[0].num_of_likes
         });
     } catch (err) {
         await client.query('ROLLBACK');
@@ -129,47 +145,5 @@ router.delete('/delete_comment/:id', [authorization, commentOwner], async (req, 
         client.release();
     }
 });
-router.delete('/delete_like/:id', authorization, async (req, res) => {
-    const client = await pool.connect();
-    try {
-        const id = parseInt(req.params.id);
-        await client.query('BEGIN');
-
-        const checkLike =
-            await client.query('SELECT * FROM commentlikes WHERE user_id=$1 AND comment_id=$2',
-                [
-                    req.user,
-                    id
-                ]);
-        if (checkLike.rows.length === 1) {
-            const updateComment =
-                await client.query('UPDATE comments SET num_of_likes=num_of_likes-1 WHERE comment_id=$1 RETURNING *',
-                    [
-                        id
-                    ]);
-            const deleteLike =
-                await client.query('DELETE FROM commentlikes WHERE user_id=$1 AND comment_id=$2 RETURNING *',
-                    [
-                        req.user,
-                        id
-                    ]);
-            await client.query('COMMIT');
-            res.json({
-                comment_id: id,
-                like_id: deleteLike.rows[0].like_id
-            });
-        } else {
-            await client.query('ROLLBACK');
-            return res.status(403).json('Not Authorized!')
-        }
-    } catch (err) {
-        await client.query('ROLLBACK');
-        console.log(err.message);
-        res.status(500).send('Server Error');
-    } finally {
-        client.release();
-    }
-});
-
 
 module.exports = router;

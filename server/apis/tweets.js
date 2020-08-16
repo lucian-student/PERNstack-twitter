@@ -36,8 +36,8 @@ router.post('/create_tweet', authorization, async (req, res) => {
                 ' VALUES ($1,$2,$3,$4) RETURNING *',
                 [
                     req.user,
-                    req.body.data.username,
-                    req.body.data.content,
+                    req.body.username,
+                    req.body.content,
                     0,
                     0
                 ]);
@@ -52,7 +52,7 @@ router.post('/create_tweet', authorization, async (req, res) => {
 router.post('/like_unlike_tweet', authorization, async (req, res) => {
     const client = await pool.connect();
     try {
-        const id = parseInt(req.body.data.id);
+        const id = parseInt(req.body.id);
         await client.query('BEGIN');
         const checkTweet =
             await client.query('SELECT like_id FROM tweetlikes WHERE user_id=$1 AND tweet_id=$2',

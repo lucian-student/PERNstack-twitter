@@ -9,10 +9,14 @@ import {
     IconButton
 } from '@material-ui/core';
 import FavoriteIcon from '@material-ui/icons/Favorite';
-import InsertCommentIcon from '@material-ui/icons/InsertComment'
+import InsertCommentIcon from '@material-ui/icons/InsertComment';
+import { likeUnlike } from '../../queries/likeQueries/likeQueries';
 function TweetDisplay() {
-    const { tweet: { num_of_likes, username, content }, comments } = useContext(CommentsContext);
-
+    const { tweet, comments, setTweet } = useContext(CommentsContext);
+    const { num_of_likes, username, content, tweet_id } = tweet[0];
+    function like_unlike() {
+        likeUnlike(tweet_id, tweet, setTweet);
+    }
     return (
         <div>
             <Card>
@@ -26,7 +30,7 @@ function TweetDisplay() {
                 </CardContent>
                 <CardActions style={{ marginLeft: '20%', marginRight: '20%' }}>
                     <div>
-                        <IconButton>
+                        <IconButton onClick={like_unlike}>
                             <FavoriteIcon />
                         </IconButton>
                         {num_of_likes}

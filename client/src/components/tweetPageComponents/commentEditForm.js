@@ -5,23 +5,17 @@ import {
     Button
 } from '@material-ui/core';
 import { ValidateEmptiness, ValidateUnneceserrySpaceUsage } from '../../utils/validators';
-import { createComment } from '../../queries/commentQuery/commentPostQueries';
-import { AuthContext } from '../../context/auth';
 import { CommentsContext } from '../../context/comments';
-function CommentsForm() {
-    const { currentUser: { name } } = useContext(AuthContext);
-    const { comments, setComments, tweet } = useContext(CommentsContext);
-    const { handleSubmit, watch, register, setValue } = useForm();
+import { editComment } from '../../queries/commentQuery/commentPostQueries';
+function CommentEditForm({ comment: { content, setEditing, index, comment_id } }) {
+    const { handleSubmit, watch, register } = useForm();
+    const { comments, setComments } = useContext(CommentsContext);
     const contentErrors = watch('content');
     function onSubmit(data) {
-        setValue("content", "")
         const content = data.content;
-        createComment(tweet[0].tweet_id, name, content, setComments, comments);
+        editComment(index, comment_id, content, setComments, comments);
+        setEditing(false);
     }
-
-    // i need make it work
-    // watch field and when there is no error display button
-
     return (
         <div style={{ overflow: 'hidden' }}>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -33,12 +27,13 @@ function CommentsForm() {
                     multiline
                     placeholder="Add a public comment..."
                     autoComplete="off"
+                    defaultValue={content}
                     inputRef={register} />
 
 
                 {ValidateEmptiness(contentErrors) && ValidateUnneceserrySpaceUsage(String(contentErrors)) && (
                     <div style={{ float: 'right' }}>
-                        <Button onClick={() => setValue("content", "")}>
+                        <Button onClick={() => { setEditing(false) }}>
                             CANCEL
                      </Button>
                         <Button type='submit'
@@ -53,4 +48,5 @@ function CommentsForm() {
     )
 }
 
-export default CommentsForm;
+
+export default CommentEditForm;

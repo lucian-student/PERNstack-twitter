@@ -11,7 +11,7 @@ import {
 } from '@material-ui/core';
 function TweetPage(props) {
     const tweetId = props.match.params.tweetId;
-    const { tweet, setTweet, setComments, queryValues } = useContext(CommentsContext);
+    const { tweet, setTweet, setComments, queryValues, setQueryValues } = useContext(CommentsContext);
     useEffect(() => {
         const { query, page, sortValue } = queryValues;
         switch (query) {
@@ -26,7 +26,7 @@ function TweetPage(props) {
             default:
                 console.log('failed');
         }
-    }, [queryValues, tweetId, setComments, setTweet]);
+    }, [queryValues, tweetId, setComments, setTweet, setQueryValues]);
     // tweetCard
     // commentFilter
     // commentsForm 

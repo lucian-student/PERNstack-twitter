@@ -14,26 +14,21 @@ export const commentsQuery = async (tweet_id, page, setTweet, setComments) => {
             }
         })
         .then(res => {
-            //  parse response tweet,comments res.data
-            //tweet data
-            //tweet_id, username, num_of_comments, num_of_likes, content, user_id 
-            //comment data
-            //comment_username, comment_likes, comment_content, comment_id, comment_user_id
             let count = 0;
             let comments = [];
             res.data.forEach(data => {
                 if (count === 0) {
-                    setTweet({
+                    setTweet([{
                         tweet_id: data.tweet_id,
                         username: data.username,
                         num_of_comments: data.num_of_comments,
                         num_of_likes: data.num_of_likes,
                         content: data.content,
                         user_id: data.user_id
-                    });
+                    }]);
                 }
                 if (data.comment_id) {
-                    comments.push({
+                    comments.unshift({
                         tweet_id: data.tweet_id,
                         username: data.comment_username,
                         num_of_likes: data.comment_likes,
@@ -67,14 +62,14 @@ export const sortByLikes = async (sortValue, tweet_id, page, setTweet, setCommen
             let comments = [];
             res.data.forEach(data => {
                 if (count === 0) {
-                    setTweet({
+                    setTweet([{
                         tweet_id: data.tweet_id,
                         username: data.username,
                         num_of_comments: data.num_of_comments,
                         num_of_likes: data.num_of_likes,
                         content: data.content,
                         user_id: data.user_id
-                    });
+                    }]);
                 }
                 if (data.comment_id) {
                     comments.push({

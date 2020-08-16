@@ -15,9 +15,9 @@ function CommentsDisplay() {
     return (
         <div>
             <ul style={{ listStyleType: 'none', padding: 0 }}>
-                {comments.reverse().map(comment => (
+                {comments.map((comment, index) => (
                     <li key={comment.comment_id}>
-                        <CommentCard comment={comment} />
+                        <CommentCard comment={{ ...comment, index }} />
                     </li>
                 ))}
             </ul>
