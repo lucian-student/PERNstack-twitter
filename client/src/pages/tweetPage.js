@@ -9,24 +9,24 @@ import TweetDisplay from '../components/tweetPageComponents/tweetDisplay';
 import {
     Paper
 } from '@material-ui/core';
-function TweetPage(props) {
-    const tweetId = props.match.params.tweetId;
+function TweetPage({ tweetId }) {
     const { tweet, setTweet, setComments, queryValues, setQueryValues } = useContext(CommentsContext);
-    useEffect(() => {
-        const { query, page, sortValue } = queryValues;
-        switch (query) {
-            case 'general':
-                commentsQuery(tweetId, page, setTweet, setComments);
-                break;
-            case 'likes':
-                if (sortValue !== null) {
-                    sortByLikes(sortValue, tweetId, page, setTweet, setComments);
-                }
-                break;
-            default:
-                console.log('failed');
-        }
-    }, [queryValues, tweetId, setComments, setTweet, setQueryValues]);
+
+        useEffect(() => {
+            const { query, page, sortValue } = queryValues;
+            switch (query) {
+                case 'general':
+                    commentsQuery(tweetId, page, setTweet, setComments);
+                    break;
+                case 'likes':
+                    if (sortValue !== null) {
+                        sortByLikes(sortValue, tweetId, page, setTweet, setComments);
+                    }
+                    break;
+                default:
+                    console.log('failed');
+            }
+        }, [queryValues, tweetId, setComments, setTweet, setQueryValues]);
     // tweetCard
     // commentFilter
     // commentsForm 

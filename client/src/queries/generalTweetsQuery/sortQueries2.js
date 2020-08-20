@@ -1,5 +1,6 @@
 import { jwtTransport } from '../../axios/refreshTokenAxios';
 import { getAcessToken } from '../../utils/accessToken';
+import { setHelper } from '../../utils/paginationHelper';
 // username and comments
 // variables: page sortValue username
 export const usernameAndComments = async (username,sortValue, page, setTweets) => {
@@ -16,6 +17,7 @@ export const usernameAndComments = async (username,sortValue, page, setTweets) =
             }
         })
         .then(res => {
+            setHelper(res.data.length);
             setTweets(res.data);
         })
         .catch(err => console.error(err));
@@ -38,6 +40,7 @@ export const usernameAndLikes = async (username,sortValue, page, setTweets) => {
             }
         })
         .then(res => {
+            setHelper(res.data.length);
             setTweets(res.data);
         })
         .catch(err => console.error(err));

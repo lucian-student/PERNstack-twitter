@@ -9,8 +9,8 @@ import { FilterContext } from '../../context/filter';
 import { generalQuery } from '../../queries/generalTweetsQuery/defaultGeneralQuery';
 import { sortByLikes, sortByComments, searchByUsername } from '../../queries/generalTweetsQuery/sortQueries';
 import { usernameAndComments, usernameAndLikes } from '../../queries/generalTweetsQuery/sortQueries2';
+import { setHelper, getHelper } from '../../utils/paginationHelper';
 function GeneralTweetsDisplay() {
-    //
     const { generalQueryValues, setGeneralQueryValues, generalTweets, setGeneralTweets } = useContext(FilterContext);
     useEffect(() => {
         const { query, sortValue, page, username } = generalQueryValues;
@@ -54,11 +54,13 @@ function GeneralTweetsDisplay() {
             {generalTweets && (
                 <div>
                     <div >
-
                         <ul style={{ listStyleType: 'none', padding: 0 }}>
-                            {generalTweets.map(tweet => (
+                            {generalTweets.map((tweet, index) => (
                                 <li key={tweet.tweet_id}>
-                                    <TweetCard tweet={tweet} />
+                                    <TweetCard tweet={{
+                                        ...tweet,
+                                        index
+                                    }} />
                                 </li>
                             ))}
                         </ul>
@@ -66,33 +68,35 @@ function GeneralTweetsDisplay() {
                     </div>
                     <div>
                         {generalQueryValues.page > 0 ? (
-                            <Button style={{ width: '50%' }}
+                            <Button style={{ width: '50%', fontSize: 'calc(1.5vw + 5px)' }}
                                 onClick={() => {
+                                    setHelper(0);
                                     setGeneralQueryValues({
                                         ...generalQueryValues,
                                         page: generalQueryValues.page - 1
                                     });
                                 }}>
-                                Previous Page {generalQueryValues.page - 1}
+                                Previous
                             </Button>
                         ) : (
-                                <Button disabled style={{ width: '50%' }}>
-                                    No Previous Page
+                                <Button disabled style={{ width: '50%', fontSize: 'calc(1.5vw + 5px)' }}>
+                                    Previous
                                 </Button>
                             )}
-                        {generalTweets.length < 10 ? (
-                            <Button disabled style={{ width: '50%' }}>
-                                No Next Page
+                        {getHelper() < 10 && generalTweets.length < 10 ? (
+                            <Button disabled style={{ width: '50%', fontSize: 'calc(1.5vw + 5px)' }}>
+                                Next
                             </Button>
                         ) : (
-                                <Button style={{ width: '50%' }}
+                                <Button style={{ width: '50%', fontSize: 'calc(1.5vw + 5px)' }}
                                     onClick={() => {
+                                        setHelper(0);
                                         setGeneralQueryValues({
                                             ...generalQueryValues,
                                             page: generalQueryValues.page + 1
                                         });
                                     }}>
-                                    Next Page {generalQueryValues.page + 1}
+                                    Next
                                 </Button>
                             )}
                     </div>

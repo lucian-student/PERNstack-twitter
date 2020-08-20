@@ -1,40 +1,50 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import {
     TextField,
     Button
 } from '@material-ui/core';
 import { ValidateEmptiness, ValidateUnneceserrySpaceUsage } from '../../utils/validators';
-import { CommentsContext } from '../../context/comments';
-import { editComment } from '../../queries/commentQuery/commentPostQueries';
-function CommentEditForm({ comment: { content, setEditing, index, comment_id } }) {
-    const { handleSubmit, watch, register } = useForm();
-    const { comments, setComments } = useContext(CommentsContext);
+import { createTweet } from '../../queries/tweetsQuery/tweetsQuery';
+import { AuthContext } from '../../context/auth';
+import { FilterContext } from '../../context/filter';
+function TweetForm() {
+    const [loading, setLoading] = useState(true);
+    const { currentUser: { name } } = useContext(AuthContext);
+    const { yourTweets, setYourTweets } = useContext(FilterContext);
+    const { handleSubmit, watch, register, setValue } = useForm();
     const contentErrors = watch('content');
     function onSubmit(data) {
+        setValue("content", "")
         const content = data.content;
-        editComment(index, comment_id, content, setComments, comments);
-        setEditing(false);
+        createTweet(content, name, setYourTweets, yourTweets);;
     }
+    function Valid(data) {
+        const valid1 = ValidateUnneceserrySpaceUsage(String(data));
+        const valid2 = ValidateEmptiness(String(data));
+
+        return valid1 && valid2 && !loading;
+    }
+    useEffect(() => {
+        setLoading(false);
+    }, []);
+
+    //.MuiTextField-root
     return (
         <div style={{ overflow: 'hidden' }}>
             <form onSubmit={handleSubmit(onSubmit)}>
-
                 <TextField
                     style={{ width: '100%' }}
-                    InputProps={{ style: { fontSize: 'calc(2.5vw + 5px)' } }}
+                    InputProps={{ style: { fontSize: 'calc(2vw + 5px)' } }}
                     name="content"
                     type="text"
                     multiline
-                    placeholder="Add a public comment..."
+                    placeholder="Create Tweet..."
                     autoComplete="off"
-                    defaultValue={content}
                     inputRef={register} />
-
-
-                {ValidateEmptiness(contentErrors) && ValidateUnneceserrySpaceUsage(String(contentErrors)) && (
+                {Valid(contentErrors) && (
                     <div style={{ float: 'right' }}>
-                        <Button onClick={() => { setEditing(false) }}
+                        <Button onClick={() => setValue("content", "")}
                             style={{ fontSize: 'calc(1.5vw + 5px)' }}>
                             CANCEL
                      </Button>
@@ -51,5 +61,4 @@ function CommentEditForm({ comment: { content, setEditing, index, comment_id } }
     )
 }
 
-
-export default CommentEditForm;
+export default TweetForm;

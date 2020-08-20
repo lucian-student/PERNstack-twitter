@@ -7,6 +7,7 @@ import TweetCard from '../mainPageComponents/tweetCard';
 import { yourDefaultQuery } from '../../queries/yourTweetsQueries/defaultYourQuery';
 import { AuthContext } from '../../context/auth';
 import { userByComments, userByLikes } from '../../queries/yourTweetsQueries/sortQueries';
+import { getHelper, setHelper } from '../../utils/paginationHelper';
 function YourTweetsDisplay() {
     const { setYourQueryValues, yourQueryValues, yourTweets, setYourTweets } = useContext(FilterContext);
     const { currentUser: { user_id } } = useContext(AuthContext);
@@ -36,9 +37,12 @@ function YourTweetsDisplay() {
                 <div>
                     <div >
                         <ul style={{ listStyleType: 'none', padding: 0 }}>
-                            {yourTweets.map(tweet => (
+                            {yourTweets.map((tweet, index) => (
                                 <li key={tweet.tweet_id}>
-                                    <TweetCard tweet={tweet} />
+                                    <TweetCard tweet={{
+                                        ...tweet,
+                                        index
+                                    }} />
                                 </li>
                             ))}
                         </ul>
@@ -46,33 +50,35 @@ function YourTweetsDisplay() {
                     </div>
                     <div>
                         {yourQueryValues.page > 0 ? (
-                            <Button style={{ width: '50%' }}
+                            <Button style={{ width: '50%', fontSize: 'calc(1.5vw + 5px)' }}
                                 onClick={() => {
+                                    setHelper(0);
                                     setYourQueryValues({
                                         ...yourQueryValues,
                                         page: yourQueryValues.page - 1
                                     });
                                 }}>
-                                Previous Page {yourQueryValues.page - 1}
+                                Previous
                             </Button>
                         ) : (
-                                <Button disabled style={{ width: '50%' }}>
-                                    No Previous Page
+                                <Button disabled style={{ width: '50%', fontSize: 'calc(1.5vw + 5px)' }}>
+                                    Previous
                                 </Button>
                             )}
-                        {yourTweets.length < 10 ? (
-                            <Button disabled style={{ width: '50%' }}>
-                                No Next Page
+                        {getHelper() < 10 && yourTweets.length < 10 ? (
+                            <Button disabled style={{ width: '50%', fontSize: 'calc(1.5vw + 5px)' }}>
+                                Next
                             </Button>
                         ) : (
-                                <Button style={{ width: '50%' }}
+                                <Button style={{ width: '50%', fontSize: 'calc(1.5vw + 5px)' }}
                                     onClick={() => {
+                                        setHelper(0);
                                         setYourQueryValues({
                                             ...yourQueryValues,
                                             page: yourQueryValues.page + 1
                                         });
                                     }}>
-                                    Next Page {yourQueryValues.page + 1}
+                                    Next
                                 </Button>
                             )}
                     </div>

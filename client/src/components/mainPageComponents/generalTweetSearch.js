@@ -38,10 +38,12 @@ function GeneralTweetSearch() {
                         {query !== 'general' ? (
                             <div>
                                 <Button className='filterButton2'
+                                    style={{ fontSize: 'calc(1.5vw + 5px)'}}
                                     onClick={() => { setSearching(true) }}>
                                     Filter
                         </Button>
                                 <Button className='filterButton2'
+                                    style={{ fontSize: 'calc(1.5vw + 5px)'}}
                                     onClick={() => {
                                         setGeneralQueryValues({
                                             query: 'general',
@@ -55,6 +57,7 @@ function GeneralTweetSearch() {
                             </div>
                         ) : (
                                 <Button className='filterButton'
+                                    style={{ fontSize: 'calc(2.5vw + 5px)' }}
                                     onClick={() => { setSearching(true) }}>
                                     Filter
                                 </Button>

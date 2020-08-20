@@ -12,7 +12,7 @@ function GeneralTweets() {
             className='mainStyle'>
             <div style={{ display: 'flex' }}>
                 <div style={{ margin: 'auto', width: '70%' }}>
-                    <div>
+                    <div style={{ fontSize: ' calc(2vw + 10px)' }}>
                         <h1>{currentUser.name}</h1>
                     </div>
                     <div>

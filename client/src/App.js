@@ -5,7 +5,7 @@ import Menu from './components/menu';
 import Login from './pages/login';
 import Register from './pages/register';
 import Main from './pages/main';
-import TweetPage from './pages/tweetPage';
+import TweetPageLanding from './pages/tweetPageLanding';
 import { AuthContext } from './context/auth';
 import { setAccessToken } from './utils/accessToken';
 import { transport } from './axios/cookieAxios';
@@ -23,8 +23,9 @@ function App() {
         })
         .then(res => {
           setAccessToken(res.data.accessToken);
-          loginUser();
-          setLoading(false);
+          loginUser().then(() => {
+            setLoading(false);
+          });
         })
         .catch(err => {
           console.error(err.message);
@@ -39,15 +40,17 @@ function App() {
   }
   return (
     <Fragment>
-      <Router>
-        <Menu />
-        <Switch>
-          <AuthRoute exact path='/main' component={Main} />
-          <AuthRoute exact path='/tweetPage/:tweetId' component={TweetPage} />
-          <NotAuthRoute exact path='/' component={Login} />
-          <NotAuthRoute exact path='/Register' component={Register} />
-        </Switch>
-      </Router>
+      {!loading && (
+        <Router>
+          <Menu />
+          <Switch>
+            <AuthRoute exact path='/main' component={Main} />
+            <AuthRoute exact path='/tweetPage/:tweetId' component={TweetPageLanding} />
+            <NotAuthRoute exact path='/' component={Login} />
+            <NotAuthRoute exact path='/Register' component={Register} />
+          </Switch>
+        </Router>
+      )}
     </Fragment>
   );
 }

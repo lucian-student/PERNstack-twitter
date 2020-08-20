@@ -4,6 +4,8 @@ import {
     Button
 } from '@material-ui/core';
 import { FilterContext } from '../../../context/filter';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
 function YourSearchSelect({ properties: { setRoute, setSearching } }) {
     const { yourFilters, setYourFilters, required } = useContext(FilterContext);
     function handlechange(event) {
@@ -23,21 +25,31 @@ function YourSearchSelect({ properties: { setRoute, setSearching } }) {
     return (
         <div>
             <div style={{ overflow: 'hidden' }}>
-                <h3 style={{ display: 'inline-block' }}>
+                <h3 style={{
+                    display: 'inline-block',
+                    fontSize: 'calc(3vw + 3px)'
+                }}>
                     Number of Likes
                </h3>
                 <Checkbox className='filterCheckBox'
                     checked={yourFilters.num_of_likes}
                     onChange={handlechange}
+                    icon={<CheckBoxOutlineBlankIcon style={{ fontSize: 'calc(3vw + 3px)' }} />}
+                    checkedIcon={<CheckBoxIcon style={{ fontSize: 'calc(3vw + 3px)' }} />}
                     id='num_of_likes' />
             </div>
             <div style={{ overflow: 'hidden' }}>
-                <h3 style={{ display: 'inline-block' }}>
+                <h3 style={{
+                    display: 'inline-block',
+                    fontSize: 'calc(3vw + 3px)'
+                }}>
                     Number of Comments
                 </h3>
                 <Checkbox className='filterCheckBox'
                     checked={yourFilters.num_of_comments}
                     onChange={handlechange}
+                    icon={<CheckBoxOutlineBlankIcon style={{ fontSize: 'calc(3vw + 3px)' }} />}
+                    checkedIcon={<CheckBoxIcon style={{ fontSize: 'calc(3vw + 3px)' }} />}
                     id='num_of_comments' />
             </div>
             <div>
@@ -45,12 +57,14 @@ function YourSearchSelect({ properties: { setRoute, setSearching } }) {
                     onClick={() => {
                         setRoute('select');
                         setSearching(false)
-                    }}>
-                    Cancel Search
+                    }}
+                    style={{ fontSize: 'calc(1.5vw + 5px)' }}>
+                    Cancel
                 </Button>
                 <Button className='searchButtons'
                     onClick={() => { setRoute('form') }}
-                    disabled={required()}>
+                    disabled={required()}
+                    style={{ fontSize: 'calc(1.5vw + 5px)' }}>
                     Next
                 </Button>
             </div>

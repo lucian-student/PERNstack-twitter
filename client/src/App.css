@@ -51,3 +51,6 @@
 .filterCheckBox{
   float: right;
 }
+.contentField{
+    word-break: break-all;
+}

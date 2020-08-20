@@ -53,12 +53,14 @@ function YourSearchForm({ properties: { setRoute, setSearching } }) {
                 {yourFilters.num_of_likes && (
                     <div>
                         <FormControl >
-                            <InputLabel htmlFor="like-native-simple">Likes</InputLabel>
+                            <InputLabel htmlFor="like-native-simple"
+                                style={{ fontSize: 'calc(2vw + 5px)' }} >Likes</InputLabel>
                             <Select
                                 native
                                 inputProps={{
                                     name: 'likes',
                                     id: 'like-native-simple',
+                                    style: { fontSize: 'calc(2vw + 5px)' }
                                 }}
                                 inputRef={register({
                                     validate: {
@@ -79,12 +81,14 @@ function YourSearchForm({ properties: { setRoute, setSearching } }) {
                     {yourFilters.num_of_comments && (
                         <div>
                             <FormControl >
-                                <InputLabel htmlFor="comment-native-simple">Comments</InputLabel>
+                                <InputLabel htmlFor="comment-native-simple"
+                                    style={{ fontSize: 'calc(2vw + 5px)' }} >Comments</InputLabel>
                                 <Select
                                     native
                                     inputProps={{
                                         name: 'comments',
                                         id: 'comment-native-simple',
+                                        style: { fontSize: 'calc(2vw + 5px)' }
                                     }}
                                     inputRef={register({
                                         validate: {
@@ -107,11 +111,13 @@ function YourSearchForm({ properties: { setRoute, setSearching } }) {
                         onClick={() => {
                             setRoute('select');
                             setSearching(false)
-                        }}>
-                        Cancel Search
+                        }}
+                        style={{ fontSize: 'calc(1.5vw + 5px)' }}>
+                        Cancel
                     </Button>
                     <Button className='searchButtons'
-                        type='submit'>
+                        type='submit'
+                        style={{ fontSize: 'calc(1.5vw + 5px)' }}>
                         Next
                     </Button>
                 </div>

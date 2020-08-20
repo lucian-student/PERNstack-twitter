@@ -10,13 +10,13 @@ import { AuthContext } from '../../context/auth';
 import { CommentsContext } from '../../context/comments';
 function CommentsForm() {
     const { currentUser: { name } } = useContext(AuthContext);
-    const { comments, setComments, tweet } = useContext(CommentsContext);
+    const { comments, setComments, tweet, setTweet } = useContext(CommentsContext);
     const { handleSubmit, watch, register, setValue } = useForm();
     const contentErrors = watch('content');
     function onSubmit(data) {
         setValue("content", "")
         const content = data.content;
-        createComment(tweet[0].tweet_id, name, content, setComments, comments);
+        createComment(tweet[0].tweet_id, name, content, setComments, comments, tweet, setTweet);
     }
 
     // i need make it work
@@ -28,6 +28,7 @@ function CommentsForm() {
 
                 <TextField
                     style={{ width: '100%' }}
+                    InputProps={{ style: { fontSize: 'calc(2.5vw + 5px)' } }}
                     name="content"
                     type="text"
                     multiline
@@ -38,12 +39,14 @@ function CommentsForm() {
 
                 {ValidateEmptiness(contentErrors) && ValidateUnneceserrySpaceUsage(String(contentErrors)) && (
                     <div style={{ float: 'right' }}>
-                        <Button onClick={() => setValue("content", "")}>
+                        <Button onClick={() => setValue("content", "")}
+                            style={{ fontSize: 'calc(1.5vw + 5px)' }}>
                             CANCEL
                      </Button>
                         <Button type='submit'
                             variant="contained"
-                            color="primary">
+                            color="primary"
+                            style={{ fontSize: 'calc(1.5vw + 5px)' }}>
                             COMMENT
                     </Button>
                     </div>

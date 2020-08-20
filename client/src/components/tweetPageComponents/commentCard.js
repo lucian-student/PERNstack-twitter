@@ -22,13 +22,13 @@ function CommentCard({ comment: { tweet_id, username, num_of_likes, content, com
         deleteComment(tweet_id, comment_id, setComments, comments, tweet, setTweet)
     }
     function like_unlike() {
-        likeUnlikeComment(comment_id, comments, setComments);
+        likeUnlikeComment(index, comment_id, comments, setComments);
     }
     return (
         <Fragment>
             <div style={{ borderBottom: ' 2px solid' }}>
                 <div style={{ overflow: 'hidden' }}>
-                    <h3 style={{ display: 'inline-block' }}>
+                    <h3 style={{ display: 'inline-block', fontSize: 'calc(2.5vw + 5px)' }}>
                         {username}
                     </h3>
                     {currentUser.user_id === user_id && !editing && (
@@ -36,13 +36,13 @@ function CommentCard({ comment: { tweet_id, username, num_of_likes, content, com
                             <IconButton onClick={delete_comment}
                                 data-for='deleteButton'
                                 data-tip="Delete">
-                                <DeleteIcon />
+                                <DeleteIcon style={{ fontSize: 'calc(3vw + 3px)' }} />
                             </IconButton>
                             <ReactTooltip id='deleteButton' place="top" type="dark" effect="solid" />
                             <IconButton onClick={edit_comment}
                                 data-for='editButton'
                                 data-tip="Edit">
-                                <EditIcon />
+                                <EditIcon style={{ fontSize: 'calc(3vw + 3px)' }} />
                             </IconButton>
                             <ReactTooltip id='editButton' place="top" type="dark" effect="solid" />
                         </div>
@@ -51,13 +51,17 @@ function CommentCard({ comment: { tweet_id, username, num_of_likes, content, com
                 </div>
                 {!editing ? (
                     <div>
-                        <p>
+                        <p style={{ fontSize: 'calc(2.5vw + 5px)' }}
+                            className='contentField'>
                             {content}
                         </p>
-                        <IconButton onClick={like_unlike}>
-                            <FavoriteIcon />
+                        <IconButton onClick={like_unlike}
+                            style={{ display: 'inline-block' }}>
+                            <FavoriteIcon style={{ fontSize: 'calc(3vw + 3px)' }} />
                         </IconButton>
-                        {num_of_likes}
+                        <div style={{ fontSize: 'calc(3vw)', display: 'inline-block' }} >
+                            {num_of_likes}
+                        </div>
                     </div>
                 ) : (
                         <CommentEditCard comment={{

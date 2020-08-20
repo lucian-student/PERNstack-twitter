@@ -10,15 +10,15 @@ router.get('/comments', authorization, async (req, res) => {
         const page = req.query.page * 10;
         const comments =
             await pool.query('WITH tweets AS (SELECT * FROM tweets WHERE tweet_id=$1),' +
-                'comments AS (SELECT * FROM comments WHERE tweet_id=$1 OFFSET $2 LIMIT 10)' +
+                'comments AS (SELECT * FROM comments WHERE tweet_id=$1 ORDER BY posting_date desc OFFSET $2 LIMIT 10)' +
                 ' SELECT tweets.tweet_id,tweets.username,comments.username as comment_username,' +
                 'tweets.num_of_comments,tweets.num_of_likes,comments.num_of_likes as comment_likes,' +
                 'tweets.content,comments.content as comment_content,comments.comment_id,comments.user_id as comment_user_id,' +
                 'tweets.user_id ' +
                 'FROM tweets LEFT JOIN comments ON tweets.tweet_id=comments.tweet_id;',
                 [
-                tweet_id,
-                page
+                    tweet_id,
+                    page
                 ]);
         res.json(comments.rows);
 
@@ -47,9 +47,9 @@ router.get('/comments_by_likes', authorization, async (req, res) => {
                 'tweets.user_id' +
                 ' FROM tweets LEFT JOIN comments ON tweets.tweet_id=comments.tweet_id;',
                 [
-                tweet_id,
-                sortValue,
-                page
+                    tweet_id,
+                    sortValue,
+                    page
                 ]);
         res.json(comments.rows);
 

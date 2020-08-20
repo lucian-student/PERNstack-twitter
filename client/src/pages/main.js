@@ -21,11 +21,19 @@ function Main() {
                     ) : (
                             <div>
                                 <div>
-                                    <Button style={{ width: '50%', backgroundColor: '#82E0AA' }}
+                                    <Button style={{
+                                        width: '50%',
+                                        backgroundColor: '#82E0AA',
+                                        fontSize: 'calc(2.5vw + 5px)'
+                                    }}
                                         onClick={() => { setRoute('general') }}>
                                         All Tweets
                                     </Button>
-                                    <Button style={{ width: '50%', backgroundColor: '#82E0AA' }}
+                                    <Button style={{
+                                        width: '50%',
+                                        backgroundColor: '#82E0AA',
+                                        fontSize: 'calc(2.5vw + 5px)'
+                                    }}
                                         onClick={() => { setRoute('your') }}>
                                         Your Page
                                     </Button>
@@ -46,7 +54,7 @@ function Main() {
                         )}
                 </div>
             </div>
-        </Fragment>
+        </Fragment >
     )
 }
 

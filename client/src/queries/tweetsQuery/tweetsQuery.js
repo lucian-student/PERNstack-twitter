@@ -15,7 +15,9 @@ export const createTweet = async (content, username, setTweets, tweets) => {
         url: `http://localhost:5000/tweets/create_tweet`,
     })
         .then(res => {
-            setTweets([res.data, ...tweets]);
+            let tempTweets = tweets;
+            tempTweets.unshift(res.data);
+            setTweets([...tempTweets]);
         })
         .catch(err => console.error(err));
 };
@@ -49,7 +51,7 @@ export const editTweet = async (index, tweetId, content, setTweets, tweets) => {
     })
         .then(res => {
             let tempTweets = tweets;
-            tempTweets[index] = red.data;
+            tempTweets[index] = res.data;
             setTweets([...tempTweets]);
         })
         .catch(err => console.error(err));

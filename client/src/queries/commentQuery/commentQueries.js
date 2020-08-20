@@ -1,5 +1,6 @@
 import { jwtTransport } from '../../axios/refreshTokenAxios';
 import { getAcessToken } from '../../utils/accessToken';
+import { setHelper } from '../../utils/paginationHelper';
 // general query
 export const commentsQuery = async (tweet_id, page, setTweet, setComments) => {
     return await jwtTransport
@@ -14,9 +15,10 @@ export const commentsQuery = async (tweet_id, page, setTweet, setComments) => {
             }
         })
         .then(res => {
+            setHelper(res.data.length);
             let count = 0;
             let comments = [];
-            res.data.forEach(data => {
+            res.data.reverse().forEach(data => {
                 if (count === 0) {
                     setTweet([{
                         tweet_id: data.tweet_id,
@@ -58,9 +60,10 @@ export const sortByLikes = async (sortValue, tweet_id, page, setTweet, setCommen
             }
         })
         .then(res => {
+            setHelper(res.data.length);
             let count = 0;
             let comments = [];
-            res.data.forEach(data => {
+            res.data.reverse().forEach(data => {
                 if (count === 0) {
                     setTweet([{
                         tweet_id: data.tweet_id,

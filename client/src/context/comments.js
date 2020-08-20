@@ -4,12 +4,8 @@ export const CommentsContext = createContext();
 export const CommentsProvider = ({ children }) => {
     const [tweet, setTweet] = useState(null);
     const [comments, setComments] = useState([]);
-
-    const [queryValues, setQueryValues] = useState({
-        query: 'general',
-        page: 0,
-        sortValue: null
-    });
+        
+    const [queryValues, setQueryValues] = useState(null);
 
     const [filters, setFilters] = useState({
         num_of_likes: false

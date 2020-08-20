@@ -1,5 +1,6 @@
 import { jwtTransport } from '../../axios/refreshTokenAxios';
 import { getAcessToken } from '../../utils/accessToken';
+import { setHelper } from '../../utils/paginationHelper';
 // tweet_queries
 // tweets by likes
 // variables: sortValue and page
@@ -16,6 +17,7 @@ export const sortByLikes = async (sortValue, page, setTweets) => {
             }
         })
         .then(res => {
+            setHelper(res.data.length);
             setTweets(res.data);
         })
         .catch(err => console.error(err));
@@ -35,6 +37,7 @@ export const sortByComments = async (sortValue, page, setTweets) => {
             }
         })
         .then(res => {
+            setHelper(res.data.length);
             setTweets(res.data);           
         })
         .catch(err => console.error(err));
@@ -55,6 +58,7 @@ export const searchByUsername = async (username, page, setTweets) => {
             }
         })
         .then(res => {
+            setHelper(res.data.length);
             setTweets(res.data);
         })
         .catch(err => console.error(err));

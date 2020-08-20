@@ -9,7 +9,7 @@ const tweetOwner = require('../midelware/tweetOwner');
 router.get('/general/:page', authorization, async (req, res) => {
     try {
         const page = parseInt(req.params.page) * 10;
-        const tweets = await pool.query('SELECT * FROM tweets OFFSET $1 LIMIT 10', [page]);
+        const tweets = await pool.query('SELECT * FROM tweets ORDER BY posting_date desc OFFSET $1 LIMIT 10', [page]);
 
         res.json(tweets.rows);
     } catch (err) {
@@ -21,7 +21,7 @@ router.get('/general/:page', authorization, async (req, res) => {
 router.get('/user', authorization, async (req, res) => {
     try {
         const page = parseInt(req.query.page) * 10;
-        const tweets = await pool.query('SELECT * FROM tweets WHERE user_id=$1 OFFSET $2 LIMIT 10', [req.query.user_id, page]);
+        const tweets = await pool.query('SELECT * FROM tweets WHERE user_id=$1 ORDER BY posting_date desc OFFSET $2 LIMIT 10', [req.query.user_id, page]);
         res.json(tweets.rows);
     } catch (err) {
         console.log(err.message);
@@ -33,7 +33,7 @@ router.post('/create_tweet', authorization, async (req, res) => {
     try {
         const newTweet =
             await pool.query('INSERT INTO tweets (user_id,username,content,num_of_likes,num_of_comments)' +
-                ' VALUES ($1,$2,$3,$4) RETURNING *',
+                ' VALUES ($1,$2,$3,$4,$5) RETURNING *',
                 [
                     req.user,
                     req.body.username,

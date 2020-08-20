@@ -1,7 +1,7 @@
 import { jwtTransport } from '../../axios/refreshTokenAxios';
 import { getAcessToken } from '../../utils/accessToken';
 
-export const createComment = async (tweetId, username, content, setComments, comments) => {
+export const createComment = async (tweetId, username, content, setComments, comments, tweet, setTweet) => {
     return await jwtTransport({
         method: 'POST',
         headers: {
@@ -25,6 +25,10 @@ export const createComment = async (tweetId, username, content, setComments, com
                 comment_id: data.comment_id,
                 user_id: data.user_id
             }, ...comments]);
+            setTweet([{
+                ...tweet[0],
+                num_of_comments: parseInt(tweet[0].num_of_comments) + 1
+            }]);
         })
         .catch(err => console.error(err));
 };

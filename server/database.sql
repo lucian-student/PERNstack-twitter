@@ -23,6 +23,7 @@ CREATE TABLE tweets (
     content VARCHAR(255) NOT NULL,
     num_of_likes BIGINT NOT NULL,
     num_of_comments BIGINT NOT NULL,
+    posting_date timestamp NOT NULL DEFAULT current_timestamp,
     FOREIGN KEY (user_id)
       REFERENCES users (user_id)
         ON DELETE CASCADE
@@ -47,6 +48,7 @@ CREATE TABLE comments (
     tweet_id INT NOT NULL,
     content VARCHAR(255) NOT NULL,
     num_of_likes BIGINT NOT NULL,
+    posting_date timestamp NOT NULL DEFAULT current_timestamp,
     FOREIGN KEY (user_id)
       REFERENCES users (user_id)  
         ON DELETE CASCADE,

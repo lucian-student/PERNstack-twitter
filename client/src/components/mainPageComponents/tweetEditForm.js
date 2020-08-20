@@ -5,35 +5,39 @@ import {
     Button
 } from '@material-ui/core';
 import { ValidateEmptiness, ValidateUnneceserrySpaceUsage } from '../../utils/validators';
-import { CommentsContext } from '../../context/comments';
-import { editComment } from '../../queries/commentQuery/commentPostQueries';
-function CommentEditForm({ comment: { content, setEditing, index, comment_id } }) {
+import { FilterContext } from '../../context/filter';
+import { editTweet } from '../../queries/tweetsQuery/tweetsQuery';
+function TweetEditForm({ tweet: { content, setEditing, index, tweet_id } }) {
     const { handleSubmit, watch, register } = useForm();
-    const { comments, setComments } = useContext(CommentsContext);
+    const { yourTweets, setYourTweets, generalTweets, setGeneralTweets, route } = useContext(FilterContext);
     const contentErrors = watch('content');
     function onSubmit(data) {
         const content = data.content;
-        editComment(index, comment_id, content, setComments, comments);
+        if (route === 'general') {
+            editTweet(index, tweet_id, content, setGeneralTweets, generalTweets);
+        } else {
+            editTweet(index, tweet_id, content, setYourTweets, yourTweets);
+        }
         setEditing(false);
     }
     return (
-        <div style={{ overflow: 'hidden' }}>
+        <div style={{ overflow: 'hidden', width: '100%' }}>
             <form onSubmit={handleSubmit(onSubmit)}>
 
                 <TextField
                     style={{ width: '100%' }}
-                    InputProps={{ style: { fontSize: 'calc(2.5vw + 5px)' } }}
+                    InputProps={{ style: { fontSize: 'calc(2vw + 5px)' } }}
                     name="content"
                     type="text"
                     multiline
-                    placeholder="Add a public comment..."
+                    placeholder="Create Tweet..."
                     autoComplete="off"
                     defaultValue={content}
                     inputRef={register} />
 
 
                 {ValidateEmptiness(contentErrors) && ValidateUnneceserrySpaceUsage(String(contentErrors)) && (
-                    <div style={{ float: 'right' }}>
+                    <div style={{ float: 'right', }}>
                         <Button onClick={() => { setEditing(false) }}
                             style={{ fontSize: 'calc(1.5vw + 5px)' }}>
                             CANCEL
@@ -52,4 +56,4 @@ function CommentEditForm({ comment: { content, setEditing, index, comment_id } }
 }
 
 
-export default CommentEditForm;
+export default TweetEditForm;

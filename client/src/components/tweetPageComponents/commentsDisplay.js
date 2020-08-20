@@ -4,13 +4,14 @@ import CommentCard from './commentCard';
 import {
     Button
 } from '@material-ui/core';
+import { setHelper, getHelper } from '../../utils/paginationHelper';
 function CommentsDisplay() {
     const { comments, queryValues, setQueryValues } = useContext(CommentsContext);
     function checkPrevious() {
         return Boolean(queryValues.page === 0);
     }
     function checkNext() {
-        return Boolean(comments.length < 10);
+        return Boolean(comments.length < 10 || getHelper() < 10);
     }
     return (
         <div>
@@ -24,20 +25,22 @@ function CommentsDisplay() {
             <div>
                 {comments && (
                     <div>
-                        <Button style={{ width: '50%' }}
+                        <Button style={{ width: '50%', fontSize: 'calc(1.5vw + 5px)' }}
                             variant="contained"
                             color="primary"
                             onClick={() => {
+                                setHelper(0);
                                 setQueryValues({
                                     ...queryValues,
                                     page: queryValues.page - 1
                                 })
                             }}
                             disabled={checkPrevious()}>Previous</Button>
-                        <Button style={{ width: '50%' }}
+                        <Button style={{ width: '50%', fontSize: 'calc(1.5vw + 5px)' }}
                             variant="contained"
                             color="primary"
                             onClick={() => {
+                                setHelper(0);
                                 setQueryValues({
                                     ...queryValues,
                                     page: queryValues.page + 1
@@ -45,9 +48,10 @@ function CommentsDisplay() {
                             }}
                             disabled={checkNext()}>Next</Button>
                     </div>
-                )}
-            </div>
-        </div>
+                )
+                }
+            </div >
+        </div >
     )
 }
 

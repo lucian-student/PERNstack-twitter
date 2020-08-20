@@ -44,13 +44,13 @@ function CommentsFilter() {
             default:
                 console.log('failed')
         }
-
-
+        setFiltering(false);
     }
     return (
         <div>
             {!filtering ? (
                 <Button className='filterButton'
+                    style={{ fontSize: 'calc(2.5vw + 5px)' }}
                     onClick={() => { setFiltering(true) }}>
                     Filters
                 </Button>
@@ -59,12 +59,14 @@ function CommentsFilter() {
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <div>
                                 <FormControl >
-                                    <InputLabel htmlFor="sort-native-simple">Search</InputLabel>
+                                    <InputLabel htmlFor="sort-native-simple"
+                                        style={{ fontSize: 'calc(2vw + 5px)' }}>Search</InputLabel>
                                     <Select
                                         native
                                         inputProps={{
                                             name: 'sort',
                                             id: 'sort-native-simple',
+                                            style: { fontSize: 'calc(2vw + 5px)' }
                                         }}
                                         inputRef={register({
                                             validate: {
@@ -82,10 +84,12 @@ function CommentsFilter() {
                                 </FormControl>
                             </div>
                             <Button className='filterButton2'
+                                style={{ fontSize: 'calc(1.5vw + 5px)' }}
                                 onClick={() => { setFiltering(false) }}>
                                 Cancel
                             </Button>
-                            <Button type='submit' className='filterButton2'>
+                            <Button type='submit' className='filterButton2'
+                                style={{ fontSize: 'calc(1.5vw + 5px)' }}>
                                 Submit
                             </Button>
                         </form>

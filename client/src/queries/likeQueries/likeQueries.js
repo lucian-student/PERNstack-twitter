@@ -1,7 +1,7 @@
 import { jwtTransport } from '../../axios/refreshTokenAxios';
 import { getAcessToken } from '../../utils/accessToken';
 
-export const likeUnlike = async (tweetId, tweets, setTweets) => {
+export const likeUnlike = async (index, tweetId, tweets, setTweets) => {
 
     return await jwtTransport({
         method: 'POST',
@@ -13,39 +13,27 @@ export const likeUnlike = async (tweetId, tweets, setTweets) => {
         url: `http://localhost:5000/tweets/like_unlike_tweet`,
     })
         .then(res => {
-            const tempTweets = [];
             if (String(res.data.type) === 'like') {
-                tweets.forEach(tweet => {
-                    if (tweetId === tweet.tweet_id) {
-                        tempTweets.push({
-                            ...tweet,
-                            num_of_likes: res.data.num_of_likes
-                        });
-                    } else {
-                        tempTweets.push(tweet);
-                    }
-
-                });
-                setTweets(tempTweets);
+                let tempTweets = tweets;
+                tempTweets[index] = {
+                    ...tweets[index],
+                    num_of_likes: parseInt(tweets[index].num_of_likes) + 1
+                }
+                setTweets([...tempTweets]);
             } else if (String(res.data.type) === 'unlike') {
-                tweets.forEach(tweet => {
-                    if (tweetId === tweet.tweet_id) {
-                        tempTweets.push({
-                            ...tweet,
-                            num_of_likes: res.data.num_of_likes
-                        });
-                    } else {
-                        tempTweets.push(tweet);
-                    }
 
-                });
-                setTweets(tempTweets);
+                let tempTweets = tweets;
+                tempTweets[index] = {
+                    ...tweets[index],
+                    num_of_likes: parseInt(tweets[index].num_of_likes) - 1
+                }
+                setTweets([...tempTweets]);
             }
         })
         .catch(err => console.error(err));
 };
 
-export const likeUnlikeComment = async (commentId, comments, setComments) => {
+export const likeUnlikeComment = async (index, commentId, comments, setComments) => {
 
     return await jwtTransport({
         method: 'POST',
@@ -57,32 +45,20 @@ export const likeUnlikeComment = async (commentId, comments, setComments) => {
         url: `http://localhost:5000/comments/like_unlike_comment`,
     })
         .then(res => {
-            const tempComments = [];
             if (String(res.data.type) === 'like') {
-                comments.forEach(comment => {
-                    if (commentId === comment.comment_id) {
-                        tempComments.push({
-                            ...comment,
-                            num_of_likes: res.data.num_of_likes
-                        });
-                    } else {
-                        tempComments.push(comment);
-                    }
-
-                });
-                setComments(tempComments);
+                let tempComments = comments;
+                tempComments[index] = {
+                    ...comments[index],
+                    num_of_likes: parseInt(comments[index].num_of_likes) + 1
+                };
+                setComments([...tempComments]);
             } else if (String(res.data.type) === 'unlike') {
-                comments.forEach(comment => {
-                    if (commentId === comment.comment_id) {
-                        tempComments.push({
-                            ...comment,
-                            num_of_likes: res.data.num_of_likes
-                        });
-                    } else {
-                        tempComments.push(comment);
-                    }
-                });
-                setComments(tempComments);
+                let tempComments = comments;
+                tempComments[index] = {
+                    ...comments[index],
+                    num_of_likes: parseInt(comments[index].num_of_likes) - 1
+                };
+                setComments([...tempComments]);
             }
         })
         .catch(err => console.error(err));
