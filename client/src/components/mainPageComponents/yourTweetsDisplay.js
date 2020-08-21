@@ -47,7 +47,7 @@ function YourTweetsDisplay({ user_id }) {
                     </div>
                     <div>
                         {yourQueryValues.page > 0 ? (
-                            <Button style={{ width: '50%', fontSize: 'calc(1.5vw + 5px)' }}
+                            <Button className='pageButton'
                                 onClick={() => {
                                     setHelper(0);
                                     setYourQueryValues({
@@ -58,16 +58,18 @@ function YourTweetsDisplay({ user_id }) {
                                 Previous
                             </Button>
                         ) : (
-                                <Button disabled style={{ width: '50%', fontSize: 'calc(1.5vw + 5px)' }}>
+                                <Button className='pageButton'
+                                    disabled>
                                     Previous
                                 </Button>
                             )}
                         {getHelper() < 10 && yourTweets.length < 10 ? (
-                            <Button disabled style={{ width: '50%', fontSize: 'calc(1.5vw + 5px)' }}>
+                            <Button className='pageButton'
+                                disabled>
                                 Next
                             </Button>
                         ) : (
-                                <Button style={{ width: '50%', fontSize: 'calc(1.5vw + 5px)' }}
+                                <Button className='pageButton'
                                     onClick={() => {
                                         setHelper(0);
                                         setYourQueryValues({

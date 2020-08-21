@@ -30,20 +30,21 @@ function CommentEditForm({ comment: { content, setEditing, index, comment_id } }
                     inputRef={register} />
 
 
-                {ValidateEmptiness(contentErrors) && ValidateUnneceserrySpaceUsage(String(contentErrors)) && (
-                    <div style={{ float: 'right' }}>
-                        <Button onClick={() => { setEditing(false) }}
-                            style={{ fontSize: 'calc(1.5vw + 5px)' }}>
-                            CANCEL
+
+                <div style={{ float: 'right' }}>
+                    <Button onClick={() => { setEditing(false) }}
+                        style={{ fontSize: 'calc(1.5vw + 5px)' }}>
+                        CANCEL
                      </Button>
-                        <Button type='submit'
-                            variant="contained"
-                            color="primary"
-                            style={{ fontSize: 'calc(1.5vw + 5px)' }}>
-                            COMMENT
+                    <Button
+                        disabled={!(ValidateEmptiness(contentErrors) && ValidateUnneceserrySpaceUsage(String(contentErrors)))}
+                        type='submit'
+                        variant="contained"
+                        color="primary"
+                        style={{ fontSize: 'calc(1.5vw + 5px)' }}>
+                        COMMENT
                     </Button>
-                    </div>
-                )}
+                </div>
             </form>
         </div >
     )

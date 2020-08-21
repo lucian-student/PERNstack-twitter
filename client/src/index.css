@@ -1,1 +1,75 @@
+.clearfix {
+    overflow: auto;
+}
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+.pageButton{
+    width:50%;
+}
+.filterButton{
+    background:linear-gradient(45deg,#4ABB9E 20%,#F2F2F2 70%);
+    width:100%;
+}
+.filterButton2{
+    background:linear-gradient(45deg,#4ABB9E 20%,#F2F2F2 70%);
+    width:50%;
+}
+@media (max-width:600px){
+    .formButton{
+        font-size:calc(1.5vw + 5px) !important; 
+    }
+    .pageButton{
+        font-size:calc(1.5vw + 5px) !important; 
+    }
+    .pageTitle{
+        font-size:calc(2vw + 10px); 
+    }
+    .filterButton{
+        font-size:calc(2.5vw + 5px) !important;
+    }
+    .filterButton2{
+        font-size:calc(1.5vw + 5px) !important; 
+    }
+    .textFieldCss{
+        font-size:calc(2vw + 5px) !important; 
+    }
+}
+
+@media (orientation: landscape) and (max-width:600px){
+    .formButton{
+        font-size:calc(1.5vw + 5px) !important; 
+    }
+    .pageButton{
+        font-size:calc(1.5vw + 5px) !important;
+    }
+    .pageTitle{
+        font-size:calc(2vw + 10px); 
+    }
+    .filterButton{
+        font-size:calc(2.5vw + 5px) !important;
+    }
+    .filterButton2{
+        font-size:calc(1.5vw + 5px) !important; 
+    }
+    .textFieldCss{
+        font-size:calc(2vw + 5px) !important; 
+    }
+}
+
+@media (min-width:600px){
+    .firstCenterDiv{
+        display:flex;
+    }
+    .secondCenterDiv{
+        margin:auto;
+        width:70%;
+    }
+  }
+
+
+
+
 

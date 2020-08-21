@@ -23,7 +23,7 @@ function CommentsDisplay() {
             <div>
                 {comments && (
                     <div>
-                        <Button style={{ width: '50%', fontSize: 'calc(1.5vw + 5px)' }}
+                        <Button className='pageButton'
                             variant="contained"
                             color="primary"
                             onClick={() => {
@@ -34,7 +34,7 @@ function CommentsDisplay() {
                                 })
                             }}
                             disabled={checkPrevious()}>Previous</Button>
-                        <Button style={{ width: '50%', fontSize: 'calc(1.5vw + 5px)' }}
+                        <Button className='pageButton'
                             variant="contained"
                             color="primary"
                             onClick={() => {

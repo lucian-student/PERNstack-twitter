@@ -8,9 +8,9 @@ function GeneralTweets() {
     return (
         <Paper elevation={3}
             className='mainStyle'>
-            <div style={{ display: 'flex' }}>
-                <div style={{ margin: 'auto', width: '70%' }}>
-                    <div style={{ fontSize: ' calc(2vw + 10px)' }}>
+            <div className='firstCenterDiv'>
+                <div className='secondCenterDiv'>
+                    <div className='pageTitle'>
                         <h1>{currentUser.name}</h1>
                     </div>
                     <div>

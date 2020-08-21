@@ -77,7 +77,7 @@ function SearchForm({ properties: { setRoute, setSearching } }) {
                     {filters.username && (
                         <div>
                             <TextField
-                                InputProps={{ style: { fontSize: 'calc(2vw + 5px)' } }}
+                                InputProps={{ className: 'textFieldCss' }}
                                 type='text'
                                 placeholder='Username'
                                 name='username'
@@ -88,7 +88,7 @@ function SearchForm({ properties: { setRoute, setSearching } }) {
                                     }
                                 })} />
                             {errors.username && errors.username.type === "positive" && (
-                                <FormHelperText className="errorText">Empty String!</FormHelperText>
+                                <FormHelperText className="helperText">Empty String!</FormHelperText>
                             )}
                         </div>
                     )}
@@ -97,13 +97,13 @@ function SearchForm({ properties: { setRoute, setSearching } }) {
                     <div>
                         <FormControl >
                             <InputLabel htmlFor="like-native-simple"
-                                style={{ fontSize: 'calc(2vw + 5px)' }} >Likes</InputLabel>
+                                style={{ className: 'textFieldCss' }} >Likes</InputLabel>
                             <Select
                                 native
                                 inputProps={{
                                     name: 'likes',
                                     id: 'like-native-simple',
-                                    style: { fontSize: 'calc(2vw + 5px)' }
+                                    className: 'textFieldCss'
                                 }}
                                 inputRef={register({
                                     validate: {
@@ -115,7 +115,7 @@ function SearchForm({ properties: { setRoute, setSearching } }) {
                                 <option value='lowest'>Lowest</option>
                             </Select>
                             {errors.likes && errors.likes.type === "positive" && (
-                                <FormHelperText className="errorText">Empty String!</FormHelperText>
+                                <FormHelperText className="helperText">Empty String!</FormHelperText>
                             )}
                         </FormControl>
                     </div>
@@ -125,13 +125,13 @@ function SearchForm({ properties: { setRoute, setSearching } }) {
                         <div>
                             <FormControl >
                                 <InputLabel htmlFor="comment-native-simple"
-                                    style={{ fontSize: 'calc(2vw + 5px)' }} >Comments</InputLabel>
+                                    className='textFieldCss' >Comments</InputLabel>
                                 <Select
                                     native
                                     inputProps={{
                                         name: 'comments',
                                         id: 'comment-native-simple',
-                                        style: { fontSize: 'calc(2vw + 5px)' }
+                                        className: 'textFieldCss'
                                     }}
                                     inputRef={register({
                                         validate: {
@@ -143,7 +143,7 @@ function SearchForm({ properties: { setRoute, setSearching } }) {
                                     <option value='lowest'>Lowest</option>
                                 </Select>
                                 {errors.comments && errors.comments.type === "positive" && (
-                                    <FormHelperText className="errorText">Empty String!</FormHelperText>
+                                    <FormHelperText className="helperText">Empty String!</FormHelperText>
                                 )}
                             </FormControl>
                         </div>
@@ -154,13 +154,11 @@ function SearchForm({ properties: { setRoute, setSearching } }) {
                         onClick={() => {
                             setRoute('select');
                             setSearching(false)
-                        }}
-                        style={{ fontSize: 'calc(1.5vw + 5px)' }}>
+                        }}>
                         Cancel
                     </Button>
                     <Button className='searchButtons'
-                        type='submit'
-                        style={{ fontSize: 'calc(1.5vw + 5px)' }}>
+                        type='submit'>
                         Next
                     </Button>
                 </div>

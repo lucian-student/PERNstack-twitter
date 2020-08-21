@@ -31,18 +31,21 @@ function CommentsForm() {
                         placeholder="Add a public comment..."
                         autoComplete="off"
                         inputRef={register} />
-                    {ValidateEmptiness(contentErrors) && ValidateUnneceserrySpaceUsage(String(contentErrors)) && (
+
+                    {contentErrors && (
                         <div style={{ float: 'right' }}>
-                            <Button onClick={() => setValue("content", "")}
+                            <Button onClick={() => setValue("content", null)}
                                 style={{ fontSize: 'calc(1.5vw + 5px)' }}>
                                 CANCEL
-                            </Button>
-                            <Button type='submit'
+                             </Button>
+                            <Button
+                                disabled={!(ValidateEmptiness(contentErrors) && ValidateUnneceserrySpaceUsage(String(contentErrors)))}
+                                type='submit'
                                 variant="contained"
                                 color="primary"
                                 style={{ fontSize: 'calc(1.5vw + 5px)' }}>
                                 COMMENT
-                            </Button>
+                             </Button>
                         </div>
                     )}
                 </form>

@@ -12,8 +12,8 @@ function Main() {
 
     return (
         <Fragment>
-            <div style={{ display: "flex" }}>
-                <div style={{ margin: "auto", width: '70%' }}>
+            <div className='firstCenterDiv'>
+                <div className='secondCenterDiv'>
                     {route === 'general' && (
                         <GeneralTweets />
                     )}

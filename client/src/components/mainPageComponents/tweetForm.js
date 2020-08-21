@@ -35,23 +35,24 @@ function TweetForm() {
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <TextField
                         style={{ width: '100%' }}
-                        InputProps={{ style: { fontSize: 'calc(2vw + 5px)' } }}
+                        InputProps={{ className: 'textFieldCss' }}
                         name="content"
                         type="text"
                         multiline
                         placeholder="Create Tweet..."
                         autoComplete="off"
                         inputRef={register} />
-                    {Valid(contentErrors) && (
+                    {contentErrors && (
                         <div style={{ float: 'right' }}>
                             <Button onClick={() => setValue("content", "")}
-                                style={{ fontSize: 'calc(1.5vw + 5px)' }}>
+                                className='formButton'>
                                 CANCEL
                      </Button>
-                            <Button type='submit'
+                            <Button disabled={!Valid(contentErrors)}
+                                type='submit'
                                 variant="contained"
                                 color="primary"
-                                style={{ fontSize: 'calc(1.5vw + 5px)' }}>
+                                className='formButton'>
                                 COMMENT
                     </Button>
                         </div>
@@ -59,7 +60,6 @@ function TweetForm() {
                 </form>
             ) : (
                     <Button className='filterButton'
-                        style={{ fontSize: 'calc(2.5vw + 5px)', width: '100%' }}
                         onClick={() => { setStart(true) }}>
                         Create Tweet
                     </Button>

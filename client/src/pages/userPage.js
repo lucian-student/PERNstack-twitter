@@ -18,12 +18,12 @@ function UserPage(props) {
 
     return (
         <Fragment>
-            <div>
-                <div>
+            <div className='firstCenterDiv'>
+                <div className='secondCenterDiv'>
                     <Paper className='mainStyle' elevation={3}>
-                        <div style={{ display: 'flex' }}>
-                            <div style={{ margin: 'auto', width: '70%' }}>
-                                <div style={{ fontSize: ' calc(2vw + 10px)' }}>
+                        <div className='firstCenterDiv'>
+                            <div className='secondCenterDiv'>
+                                <div className='pageTitle'>
                                     <h1 >User Page</h1>
                                 </div>
                                 {route === 'your' && (

@@ -24,7 +24,7 @@ function TweetEditForm({ tweet: { content, setEditing, index, tweet_id } }) {
 
                 <TextField
                     style={{ width: '100%' }}
-                    InputProps={{ style: { fontSize: 'calc(2vw + 5px)' } }}
+                    InputProps={{ className: 'textFieldCss' }}
                     name="content"
                     type="text"
                     multiline
@@ -34,20 +34,22 @@ function TweetEditForm({ tweet: { content, setEditing, index, tweet_id } }) {
                     inputRef={register} />
 
 
-                {ValidateEmptiness(contentErrors) && ValidateUnneceserrySpaceUsage(String(contentErrors)) && (
-                    <div style={{ float: 'right', }}>
-                        <Button onClick={() => { setEditing(false) }}
-                            style={{ fontSize: 'calc(1.5vw + 5px)' }}>
-                            CANCEL
+
+                <div style={{ float: 'right', }}>
+                    <Button onClick={() => { setEditing(false) }}
+                        className='formButton'>
+                        CANCEL
                      </Button>
-                        <Button type='submit'
-                            variant="contained"
-                            color="primary"
-                            style={{ fontSize: 'calc(1.5vw + 5px)' }}>
-                            COMMENT
+                    <Button
+                        disabled={!(ValidateEmptiness(contentErrors) && ValidateUnneceserrySpaceUsage(String(contentErrors)))}
+                        type='submit'
+                        variant="contained"
+                        color="primary"
+                        className='formButton'>
+                        COMMENT
                     </Button>
-                    </div>
-                )}
+                </div>
+
             </form>
         </div >
     )

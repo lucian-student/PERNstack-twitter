@@ -40,17 +40,63 @@
   background:linear-gradient(45deg,#4ABB9E 20%,#F2F2F2 70%);
   width:50%;
 }
-.filterButton{
-  background:linear-gradient(45deg,#4ABB9E 20%,#F2F2F2 70%);
-  width:100%;
-}
-.filterButton2{
-  background:linear-gradient(45deg,#4ABB9E 20%,#F2F2F2 70%);
-  width:50%;
-}
 .filterCheckBox{
   float: right;
 }
 .contentField{
     word-break: break-all;
+}
+.helperText{
+  color:red !important;
+}
+@media (min-width:600px){
+  .firstCenterDiv{
+      display:flex;
+  }
+  .secondCenterDiv{
+      margin:auto;
+      width:70%;
+  }
+}
+
+@media (max-width:600px){
+  .helperText{
+    font-size:calc(1.5vw + 5px) !important;
+  }
+  .linkRight{
+    font-size:calc(2vw + 10px);
+  }
+  .linkLeft{
+    font-size:calc(2vw + 5px) !important;
+  }
+  .contentField{
+    font-size:calc(2vw + 5px) !important;
+  }
+  .searchButtons{
+    font-size:calc(1.5vw + 5px) !important;
+  }
+  .selectProp{
+    font-size:calc(3vw + 3px) !important;
+  }
+}
+
+@media (orientation: landscape) and (max-width:600px){
+  .helperText{
+    font-size:calc(1.5vw + 5px) !important;
+  }
+  .linkRight{
+    font-size:calc(2vw + 10px);
+  }
+  .linkLeft{
+    font-size:calc(2vw + 2px) !important;
+  }
+  .contentField{
+    font-size:calc(2vw + 2px) !important;
+  }
+  .searchButtons{
+    font-size:calc(1.5vw + 5px) !important;
+  }
+  .selectProp{
+    font-size:calc(3vw + 3px) !important;
+  }
 }

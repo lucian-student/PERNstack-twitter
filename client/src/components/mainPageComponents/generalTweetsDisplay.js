@@ -66,7 +66,7 @@ function GeneralTweetsDisplay() {
                     </div>
                     <div>
                         {generalQueryValues.page > 0 ? (
-                            <Button style={{ width: '50%', fontSize: 'calc(1.5vw + 5px)' }}
+                            <Button className='pageButton'
                                 onClick={() => {
                                     setHelper(0);
                                     setGeneralQueryValues({
@@ -77,16 +77,16 @@ function GeneralTweetsDisplay() {
                                 Previous
                             </Button>
                         ) : (
-                                <Button disabled style={{ width: '50%', fontSize: 'calc(1.5vw + 5px)' }}>
+                                <Button disabled className='pageButton'>
                                     Previous
                                 </Button>
                             )}
                         {getHelper() < 10 && generalTweets.length < 10 ? (
-                            <Button disabled style={{ width: '50%', fontSize: 'calc(1.5vw + 5px)' }}>
+                            <Button disabled className='pageButton'>
                                 Next
                             </Button>
                         ) : (
-                                <Button style={{ width: '50%', fontSize: 'calc(1.5vw + 5px)' }}
+                                <Button className='pageButton'
                                     onClick={() => {
                                         setHelper(0);
                                         setGeneralQueryValues({

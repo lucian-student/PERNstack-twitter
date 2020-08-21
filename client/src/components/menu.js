@@ -11,14 +11,16 @@ function Menu() {
                 <div>
                     {currentUser && (
                         <div className='leftMenu' style={{ display: 'inline-block' }}>
-                            <Button className='buttonAnim'>
+                            <Button className='buttonAnim'
+                                style={{ backgroundColor: 'transparent' }}>
                                 <Link to='/main' className='linkLeft'>
                                     <h2>
                                         Main
                                      </h2>
                                 </Link>
                             </Button>
-                            <Button className='buttonAnim'>
+                            <Button className='buttonAnim'
+                                style={{ backgroundColor: 'transparent' }}>
                                 <Link to={`/userPage/${currentUser.user_id}`} className='linkLeft'>
                                     <h2>
                                         You
@@ -27,7 +29,7 @@ function Menu() {
                             </Button>
                         </div>
                     )}
-                    <div className='rightMenu' style={{ display: 'inline-block' }}>
+                    <div className='rightMenu' style={{ display: 'inline-block', overflow: 'hidden' }}>
                         {!currentUser ? (
                             <div >
                                 <Button className='buttonAnim'

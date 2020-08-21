@@ -32,23 +32,27 @@ function CommentCard({ comment: { tweet_id, username, num_of_likes, content, com
                     <h3 style={{ display: 'inline-block', fontSize: 'calc(2.5vw + 5px)' }}>
                         {username}
                     </h3>
-                    {currentUser.user_id === user_id && !editing && openOptions ? (
-                        <div style={{ display: 'inline-block', float: 'right' }}>
-                            <IconButton onClick={delete_comment}
-                                data-for='deleteButton'
-                                data-tip="Delete">
-                                <DeleteIcon style={{ fontSize: 'calc(3vw + 3px)' }} />
-                            </IconButton>
-                            <ReactTooltip id='deleteButton' place="top" type="dark" effect="solid" />
-                            <IconButton onClick={edit_comment}
-                                data-for='editButton'
-                                data-tip="Edit">
-                                <EditIcon style={{ fontSize: 'calc(3vw + 3px)' }} />
-                            </IconButton>
-                            <ReactTooltip id='editButton' place="top" type="dark" effect="solid" />
-                        </div>
-                    ) : (
-                            <div style={{ display: 'inline-block', float: 'right' }}>
+                    <div style={{ display: 'inline-block', float: 'right' }}>
+                        {currentUser.user_id === user_id && !editing && openOptions && (
+                            <div>
+                                <IconButton onClick={delete_comment}
+                                    data-for='deleteButton'
+                                    data-tip="Delete">
+                                    <DeleteIcon style={{ fontSize: 'calc(3vw + 3px)' }} />
+                                </IconButton>
+                                <ReactTooltip id='deleteButton' place="top" type="dark" effect="solid" />
+                                <IconButton onClick={edit_comment}
+                                    data-for='editButton'
+                                    data-tip="Edit">
+                                    <EditIcon style={{ fontSize: 'calc(3vw + 3px)' }} />
+                                </IconButton>
+                                <ReactTooltip id='editButton' place="top" type="dark" effect="solid" />
+                            </div>
+                        )}
+                    </div>
+                    <div style={{ display: 'inline-block', float: 'right' }}>
+                        {!openOptions && (
+                            <div>
                                 <IconButton onClick={() => { setOpenOptions(true) }}
                                     data-for='menuOpen'
                                     data-tip="Open Menu">
@@ -57,7 +61,7 @@ function CommentCard({ comment: { tweet_id, username, num_of_likes, content, com
                                 <ReactTooltip id='menuOpen' place="top" type="dark" effect="solid" />
                             </div>
                         )}
-
+                    </div>
                 </div>
                 {!editing ? (
                     <div>

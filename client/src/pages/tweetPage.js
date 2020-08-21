@@ -9,45 +9,43 @@ import Paper from '@material-ui/core/Paper';
 function TweetPage({ tweetId }) {
     const { tweet, setTweet, setComments, queryValues, setQueryValues } = useContext(CommentsContext);
 
-        useEffect(() => {
-            const { query, page, sortValue } = queryValues;
-            switch (query) {
-                case 'general':
-                    commentsQuery(tweetId, page, setTweet, setComments);
-                    break;
-                case 'likes':
-                    if (sortValue !== null) {
-                        sortByLikes(sortValue, tweetId, page, setTweet, setComments);
-                    }
-                    break;
-                default:
-                    console.log('failed');
-            }
-        }, [queryValues, tweetId, setComments, setTweet, setQueryValues]);
+    useEffect(() => {
+        const { query, page, sortValue } = queryValues;
+        switch (query) {
+            case 'general':
+                commentsQuery(tweetId, page, setTweet, setComments);
+                break;
+            case 'likes':
+                if (sortValue !== null) {
+                    sortByLikes(sortValue, tweetId, page, setTweet, setComments);
+                }
+                break;
+            default:
+                console.log('failed');
+        }
+    }, [queryValues, tweetId, setComments, setTweet, setQueryValues]);
     // tweetCard
     // commentFilter
     // commentsForm 
     // comments
     return (
         <Fragment>
-            <div style={{ display: "flex" }}>
-                <div style={{ margin: "auto", width: '70%' }}>
+            <div className='firstCenterDiv'>
+                <div className='secondCenterDiv'>
                     <Paper elevation={3}
                         className='mainStyle'>
-                        <div style={{ display: 'flex' }}>
-                            <div style={{ margin: 'auto', width: '70%' }}>
-                                <div>
-                                    {tweet && (
-                                        <div style={{ marginTop: '10%' }}>
-                                            <TweetDisplay />
-                                            <CommentsFilter />
-                                            <CommentsForm />
-                                            <CommentsDisplay />
-                                        </div>
-                                    )}
+                        {tweet && (
+                            <div className='firstCenterDiv'>
+                                <div className='secondCenterDiv'>
+                                    <div style={{ marginTop: '10%' }}>
+                                        <TweetDisplay />
+                                        <CommentsFilter />
+                                        <CommentsForm />
+                                        <CommentsDisplay />
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        )}
                     </Paper>
                 </div>
             </div>
