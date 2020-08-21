@@ -2,7 +2,6 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const server = require('http').createServer(app);
-const io = require('socket.io')(server);
 const cookieParser = require('cookie-parser');
 //midelware
 app.use(cors({
@@ -17,10 +16,6 @@ app.use('/comments', require('./apis/comments'));
 app.use('/token', require('./apis/token'));
 app.use('/tweet_queries', require('./apis/tweetQueries'));
 app.use('/comment_queries', require('./apis/commentQueries'));
-// socket io 
-io.on('connection', () => {
-    console.log('socket connected');
-});
 //get
 
 //post

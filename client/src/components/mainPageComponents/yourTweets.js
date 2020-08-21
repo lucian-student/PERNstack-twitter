@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-    Paper,
-} from '@material-ui/core';
+import Paper from '@material-ui/core/Paper';
 import YourTweetsDisplay from './yourTweetsDisplay';
 import YourTweetsSearch from './yourTweetsSearch';
 import TweetForm from './tweetForm';

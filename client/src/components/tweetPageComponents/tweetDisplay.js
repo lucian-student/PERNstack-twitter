@@ -11,17 +11,19 @@ import {
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import InsertCommentIcon from '@material-ui/icons/InsertComment';
 import { likeUnlike } from '../../queries/likeQueries/likeQueries';
-import { withStyles } from '@material-ui/core/styles';
 import { AuthContext } from '../../context/auth';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import TweetEditForm from '../../components/mainPageComponents/tweetEditForm';
 import ReactTooltip from 'react-tooltip';
 import { deleteTweet } from '../../queries/tweetsQuery/tweetsQuery';
+import MenuOpenIcon from '@material-ui/icons/MenuOpen'
+import '../../cardCss.css';
 function TweetDisplay() {
     const { tweet, setTweet } = useContext(CommentsContext);
     const { currentUser } = useContext(AuthContext);
     const [editing, setEditing] = useState(false);
+    const [openOptions, setOpenOptions] = useState(false);
     function like_unlike() {
         likeUnlike(0, tweet[0].tweet_id, tweet, setTweet);
     }
@@ -31,24 +33,8 @@ function TweetDisplay() {
     function delete_tweet() {
         deleteTweet(tweet[0].tweet_id, setTweet, tweet);
     }
-    const CardContentCss = withStyles({
-        '@global': {
-            '.MuiCardContent-root': {
-                padding: 0
-            },
-        },
-    })(() => null);
-    const CardTitleCss = withStyles({
-        '@global': {
-            '.MuiCardHeader-title': {
-                fontSize: 'calc(2.5vw + 5px)',
-            },
-        },
-    })(() => null);
     return (
         <div>
-            <CardContentCss />
-            <CardTitleCss />
             <Card>
                 <CardHeader
                     title={tweet[0].username}
@@ -56,7 +42,7 @@ function TweetDisplay() {
                         marginLeft: '10%',
                         display: 'inline-block'
                     }} />
-                {currentUser.user_id === tweet[0].user_id && !editing && (
+                {currentUser.user_id === tweet[0].user_id && !editing && openOptions ? (
                     <div style={{ display: 'inline-block', float: 'right' }}>
                         <IconButton onClick={delete_tweet}
                             data-for='deleteButton'
@@ -74,11 +60,21 @@ function TweetDisplay() {
                         </IconButton>
                         <ReactTooltip id='editButton' place="top" type="dark" effect="solid" />
                     </div>
-                )}
+                ) : (
+
+                        <div style={{ display: 'inline-block', float: 'right' }}>
+                            <IconButton onClick={() => { setOpenOptions(true) }}
+                                data-for='menuOpen'
+                                data-tip="Open Menu">
+                                <MenuOpenIcon style={{ fontSize: 'calc(3vw + 3px)' }} />
+                            </IconButton>
+                            <ReactTooltip id='menuOpen' place="top" type="dark" effect="solid" />
+                        </div>
+                    )}
                 <CardContent style={{ marginLeft: '10%' }}>
                     {!editing ? (
                         <Typography variant="body2" color="textSecondary" component="p"
-                            style={{ fontSize: 'calc(2vw + 5px)',marginRight: '10%' }}
+                            style={{ fontSize: 'calc(2vw + 5px)', marginRight: '10%' }}
                             className='contentField'>
                             {tweet[0].content}
                         </Typography>

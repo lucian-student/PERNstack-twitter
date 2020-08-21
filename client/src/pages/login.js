@@ -1,21 +1,19 @@
-import React, { Fragment,useContext } from 'react';
+import React, { Fragment, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { setAccessToken } from '../utils/accessToken';
-import {transport} from '../axios/cookieAxios';
-import {
-    TextField,
-    FormHelperText,
-    Button,
-    Paper,
-    FormLabel,
-    InputLabel
-} from '@material-ui/core';
-import {AuthContext} from '../context/auth';
+import { transport } from '../axios/cookieAxios';
+import TextField from '@material-ui/core/TextField';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import Button from '@material-ui/core/Button';
+import FormLabel from '@material-ui/core/FormLabel';
+import InputLabel from '@material-ui/core/InputLabel';
+import Paper from '@material-ui/core/Paper';
+import { AuthContext } from '../context/auth';
 
 function Login() {
     const regEx = /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$/;
     const { register, handleSubmit, errors } = useForm();
-    const {loginUser} = useContext(AuthContext);
+    const { loginUser } = useContext(AuthContext);
     async function handleLogin(data) {
         const { email, password } = data;
         return await transport

@@ -1,7 +1,5 @@
 import React, { Fragment, useContext, useState } from 'react';
-import {
-    IconButton,
-} from '@material-ui/core';
+import IconButton from '@material-ui/core/IconButton';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
@@ -11,9 +9,12 @@ import { CommentsContext } from '../../context/comments';
 import { likeUnlikeComment } from '../../queries/likeQueries/likeQueries';
 import { deleteComment } from '../../queries/commentQuery/commentPostQueries';
 import CommentEditCard from './commentEditForm';
+import MenuOpenIcon from '@material-ui/icons/MenuOpen'
+import '../../cardCss.css';
 function CommentCard({ comment: { tweet_id, username, num_of_likes, content, comment_id, user_id, index } }) {
     const { currentUser } = useContext(AuthContext);
     const { setComments, comments, tweet, setTweet } = useContext(CommentsContext);
+    const [openOptions, setOpenOptions] = useState(false);
     const [editing, setEditing] = useState(false);
     function edit_comment() {
         setEditing(true);
@@ -31,7 +32,7 @@ function CommentCard({ comment: { tweet_id, username, num_of_likes, content, com
                     <h3 style={{ display: 'inline-block', fontSize: 'calc(2.5vw + 5px)' }}>
                         {username}
                     </h3>
-                    {currentUser.user_id === user_id && !editing && (
+                    {currentUser.user_id === user_id && !editing && openOptions ? (
                         <div style={{ display: 'inline-block', float: 'right' }}>
                             <IconButton onClick={delete_comment}
                                 data-for='deleteButton'
@@ -46,7 +47,16 @@ function CommentCard({ comment: { tweet_id, username, num_of_likes, content, com
                             </IconButton>
                             <ReactTooltip id='editButton' place="top" type="dark" effect="solid" />
                         </div>
-                    )}
+                    ) : (
+                            <div style={{ display: 'inline-block', float: 'right' }}>
+                                <IconButton onClick={() => { setOpenOptions(true) }}
+                                    data-for='menuOpen'
+                                    data-tip="Open Menu">
+                                    <MenuOpenIcon style={{ fontSize: 'calc(3vw + 3px)' }} />
+                                </IconButton>
+                                <ReactTooltip id='menuOpen' place="top" type="dark" effect="solid" />
+                            </div>
+                        )}
 
                 </div>
                 {!editing ? (

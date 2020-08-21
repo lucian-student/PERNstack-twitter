@@ -1,9 +1,7 @@
 import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
-import {
-    TextField,
-    Button
-} from '@material-ui/core';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 import { ValidateEmptiness, ValidateUnneceserrySpaceUsage } from '../../utils/validators';
 import { CommentsContext } from '../../context/comments';
 import { editComment } from '../../queries/commentQuery/commentPostQueries';

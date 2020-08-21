@@ -1,10 +1,6 @@
 import React, { useEffect, useContext } from 'react';
 import TweetCard from '../mainPageComponents/tweetCard';
-/*import { jwtTransport } from '../../axios/refreshTokenAxios';
-import { getAcessToken } from '../../utils/accessToken';*/
-import {
-    Button
-} from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 import { FilterContext } from '../../context/filter';
 import { generalQuery } from '../../queries/generalTweetsQuery/defaultGeneralQuery';
 import { sortByLikes, sortByComments, searchByUsername } from '../../queries/generalTweetsQuery/sortQueries';
@@ -48,6 +44,8 @@ function GeneralTweetsDisplay() {
         }
 
     }, [generalQueryValues, setGeneralTweets]);
+
+
 
     return (
         <div>

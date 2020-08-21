@@ -1,7 +1,5 @@
 import React, { useContext } from 'react';
-import {
-    Paper
-} from '@material-ui/core';
+import Paper from '@material-ui/core/Paper';
 import GeneralTweetsDisplay from '../mainPageComponents/generalTweetsDisplay';
 import GeneralTweetSearch from '../mainPageComponents/generalTweetSearch';
 import { AuthContext } from '../../context/auth';

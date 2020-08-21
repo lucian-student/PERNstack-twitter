@@ -1,7 +1,5 @@
 import React, { useState, useContext } from 'react';
-import {
-    Button
-} from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 import SearchSelect from './searchRoutes/searchSelect';
 import SearchForm from './searchRoutes/searchForm';
 import { FilterContext } from '../../context/filter';
@@ -9,7 +7,6 @@ function GeneralTweetSearch() {
     const [route, setRoute] = useState('select');
     const [searching, setSearching] = useState(false);
     const { generalQueryValues: { query }, setGeneralQueryValues } = useContext(FilterContext);
-    //select criterias than fill formular
     return (
         <div>
             {searching ? (
@@ -38,12 +35,12 @@ function GeneralTweetSearch() {
                         {query !== 'general' ? (
                             <div>
                                 <Button className='filterButton2'
-                                    style={{ fontSize: 'calc(1.5vw + 5px)'}}
+                                    style={{ fontSize: 'calc(1.5vw + 5px)' }}
                                     onClick={() => { setSearching(true) }}>
                                     Filter
                         </Button>
                                 <Button className='filterButton2'
-                                    style={{ fontSize: 'calc(1.5vw + 5px)'}}
+                                    style={{ fontSize: 'calc(1.5vw + 5px)' }}
                                     onClick={() => {
                                         setGeneralQueryValues({
                                             query: 'general',

@@ -2,7 +2,7 @@ import React, { createContext, useState } from 'react';
 export const FilterContext = createContext();
 
 export const FilterProvider = ({ children }) => {
-    const [route, setRoute] = useState('general');
+    const [route, setRoute] = useState(null);
 
     const [generalTweets, setGeneralTweets] = useState(null);
 

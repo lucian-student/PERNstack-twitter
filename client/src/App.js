@@ -11,7 +11,10 @@ import { setAccessToken } from './utils/accessToken';
 import { transport } from './axios/cookieAxios';
 import NotAuthRoute from './utils/notAuthRoute';
 import AuthRoute from './utils/authRoute';
-
+import { FilterProvider } from './context/filter';
+import { CommentsProvider } from './context/comments';
+import { withStyles } from '@material-ui/core/styles';
+import UserPage from './pages/userPage';
 function App() {
   const [loading, setLoading] = useState(true);
   const { loginUser } = useContext(AuthContext);
@@ -38,18 +41,40 @@ function App() {
   if (loading) {
     return <div>Loading ...</div>
   }
+
+  const CardContentCss = withStyles({
+    '@global': {
+      '.MuiCardContent-root': {
+        padding: 0
+      },
+    },
+  })(() => null);
+  const CardTitleCss = withStyles({
+    '@global': {
+      '.MuiCardHeader-title': {
+        fontSize: 'calc(2.5vw + 5px)',
+      },
+    },
+  })(() => null);
   return (
     <Fragment>
+      <CardTitleCss />
+      <CardContentCss />
       {!loading && (
-        <Router>
-          <Menu />
-          <Switch>
-            <AuthRoute exact path='/main' component={Main} />
-            <AuthRoute exact path='/tweetPage/:tweetId' component={TweetPageLanding} />
-            <NotAuthRoute exact path='/' component={Login} />
-            <NotAuthRoute exact path='/Register' component={Register} />
-          </Switch>
-        </Router>
+        <CommentsProvider>
+          <FilterProvider>
+            <Router>
+              <Menu />
+              <Switch>
+                <AuthRoute exact path='/main' component={Main} />
+                <AuthRoute exact path='/userPage/:userId' component={UserPage} />
+                <AuthRoute exact path='/tweetPage/:tweetId' component={TweetPageLanding} />
+                <NotAuthRoute exact path='/' component={Login} />
+                <NotAuthRoute exact path='/Register' component={Register} />
+              </Switch>
+            </Router>
+          </FilterProvider>
+        </CommentsProvider>
       )}
     </Fragment>
   );

@@ -1,9 +1,7 @@
 import React, { Fragment, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import {
-    Paper,
-    Button
-} from '@material-ui/core';
+import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
 import { AuthContext } from '../context/auth';
 function Menu() {
     const { currentUser, logout } = useContext(AuthContext);
@@ -11,17 +9,24 @@ function Menu() {
         <Fragment>
             <Paper className='navigation' elevation={2}>
                 <div>
-                    <div className='leftMenu' style={{ display: 'inline-block' }}>
-                        {currentUser && (
+                    {currentUser && (
+                        <div className='leftMenu' style={{ display: 'inline-block' }}>
                             <Button className='buttonAnim'>
                                 <Link to='/main' className='linkLeft'>
                                     <h2>
-                                        Menu
+                                        Main
                                      </h2>
                                 </Link>
                             </Button>
-                        )}
-                    </div>
+                            <Button className='buttonAnim'>
+                                <Link to={`/userPage/${currentUser.user_id}`} className='linkLeft'>
+                                    <h2>
+                                        You
+                                    </h2>
+                                </Link>
+                            </Button>
+                        </div>
+                    )}
                     <div className='rightMenu' style={{ display: 'inline-block' }}>
                         {!currentUser ? (
                             <div >

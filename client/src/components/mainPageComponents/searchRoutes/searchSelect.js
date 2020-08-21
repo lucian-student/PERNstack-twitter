@@ -1,8 +1,6 @@
 import React, { useContext } from 'react';
-import {
-    Checkbox,
-    Button
-} from '@material-ui/core';
+import Checkbox from '@material-ui/core/Checkbox';
+import Button from '@material-ui/core/Button';
 import { FilterContext } from '../../../context/filter';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';

@@ -1,0 +1,6 @@
+.cardTitle{
+    margin-left:10%;
+    margin-top:5%;
+    font-size: calc(2.5vw + 3px);
+    display: inline-block;
+}

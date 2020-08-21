@@ -1,9 +1,7 @@
 import React, { useContext } from 'react';
 import { CommentsContext } from '../../context/comments';
 import CommentCard from './commentCard';
-import {
-    Button
-} from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 import { setHelper, getHelper } from '../../utils/paginationHelper';
 function CommentsDisplay() {
     const { comments, queryValues, setQueryValues } = useContext(CommentsContext);

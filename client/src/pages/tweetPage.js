@@ -5,10 +5,7 @@ import CommentsForm from '../components/tweetPageComponents/commentsForm';
 import CommentsDisplay from '../components/tweetPageComponents/commentsDisplay';
 import CommentsFilter from '../components/tweetPageComponents/commentsFilter';
 import TweetDisplay from '../components/tweetPageComponents/tweetDisplay';
-
-import {
-    Paper
-} from '@material-ui/core';
+import Paper from '@material-ui/core/Paper';
 function TweetPage({ tweetId }) {
     const { tweet, setTweet, setComments, queryValues, setQueryValues } = useContext(CommentsContext);
 

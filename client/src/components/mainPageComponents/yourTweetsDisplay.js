@@ -1,16 +1,12 @@
 import React, { useEffect, useContext } from 'react';
-import {
-    Button
-} from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 import { FilterContext } from '../../context/filter';
 import TweetCard from '../mainPageComponents/tweetCard';
 import { yourDefaultQuery } from '../../queries/yourTweetsQueries/defaultYourQuery';
-import { AuthContext } from '../../context/auth';
 import { userByComments, userByLikes } from '../../queries/yourTweetsQueries/sortQueries';
 import { getHelper, setHelper } from '../../utils/paginationHelper';
-function YourTweetsDisplay() {
+function YourTweetsDisplay({ user_id }) {
     const { setYourQueryValues, yourQueryValues, yourTweets, setYourTweets } = useContext(FilterContext);
-    const { currentUser: { user_id } } = useContext(AuthContext);
     useEffect(() => {
         const { query, page, sortValue } = yourQueryValues;
         switch (query) {
@@ -31,6 +27,7 @@ function YourTweetsDisplay() {
                 console.log('failed');
         }
     }, [yourQueryValues, user_id, setYourTweets]);
+
     return (
         <div>
             {yourTweets && (

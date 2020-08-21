@@ -1,11 +1,9 @@
 import React, { useState, useContext } from 'react';
-import {
-    Button,
-    FormHelperText,
-    FormControl,
-    Select,
-    InputLabel
-} from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import Select from '@material-ui/core/Select';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
 import { useForm } from 'react-hook-form';
 import { ValidateEmptiness } from '../../utils/validators'
 import { CommentsContext } from '../../context/comments';

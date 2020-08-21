@@ -1,14 +1,12 @@
 import React, { useContext } from 'react';
 import { FilterContext } from '../../../context/filter';
 import { useForm } from 'react-hook-form';
-import {
-    Button,
-    TextField,
-    FormHelperText,
-    FormControl,
-    Select,
-    InputLabel
-} from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import Select from '@material-ui/core/Select';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
 import { ValidateEmptiness } from '../../../utils/validators';
 function SearchForm({ properties: { setRoute, setSearching } }) {
     const { filters, setGeneralQueryValues } = useContext(FilterContext);
