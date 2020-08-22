@@ -54,9 +54,11 @@ function Menu() {
                                     <Button className='buttonAnim'
                                         style={{ backgroundColor: 'transparent' }}
                                         onClick={() => { logout() }}>
-                                        <h2 className='linkRight'>
-                                            Logout
-                                         </h2>
+                                        <div className='linkRight'>
+                                            <h2 >
+                                                Logout
+                                            </h2>
+                                        </div>
                                     </Button>
                                 </div>
                             )}

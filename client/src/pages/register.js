@@ -35,19 +35,20 @@ function Register() {
     }
     return (
         <Fragment >
-            <div style={{ display: "flex" }}>
-                <div style={{ margin: "auto", width: '70%' }}>
+            <div className='firstCenterDiv'>
+                <div className='secondCenterDiv'>
                     <Paper elevation={2} className='formPaper'>
-                        <div style={{ display: "flex" }}>
-                            <div style={{ margin: "auto", width: '70%' }}>
-                                <FormLabel>
+                        <div className='firstCenterDiv'>
+                            <div className='secondCenterDiv'>
+                                <FormLabel className='loginTitle'>
                                     <h2>Create new account:</h2>
                                 </FormLabel>
                                 <form onSubmit={handleSubmit(handleRegister)}>
-                                    <InputLabel>
+                                    <InputLabel className='loginLabel'>
                                         Username
                                     </InputLabel>
                                     <TextField
+                                        InputProps={{ className: 'textFieldCss' }}
                                         name="username"
                                         type="text"
                                         placeholder="Username"
@@ -61,21 +62,22 @@ function Register() {
                                             }
                                         })} />
                                     {errors.username && errors.username.type === "required" && (
-                                        <FormHelperText className="errorText">Username is empty!</FormHelperText>
+                                        <FormHelperText className="helperText">Username is empty!</FormHelperText>
                                     )}
                                     {errors.username && errors.username.type === "minLength" && (
-                                        <FormHelperText className="errorText">Username has to be atleast 3 chars long!</FormHelperText>
+                                        <FormHelperText className="helperText">Username has to be atleast 3 chars long!</FormHelperText>
                                     )}
                                     {errors.username && errors.username.type === "positive" && (
-                                        <FormHelperText className="errorText">Dont use space at start and end!</FormHelperText>
+                                        <FormHelperText className="helperText">Dont use space at start and end!</FormHelperText>
                                     )}
                                     {errors.username && errors.username.type === "positive2" && (
-                                        <FormHelperText className="errorText">Dont use more than one space in row!</FormHelperText>
+                                        <FormHelperText className="helperText">Dont use more than one space in row!</FormHelperText>
                                     )}
-                                    <InputLabel>
+                                    <InputLabel className='loginLabel'>
                                         Email
                                     </InputLabel >
                                     <TextField
+                                        InputProps={{ className: 'textFieldCss' }}
                                         name="email"
                                         type="email"
                                         placeholder="Email"
@@ -85,15 +87,16 @@ function Register() {
                                             required: true
                                         })} />
                                     {errors.email && errors.email.type === "pattern" && (
-                                        <FormHelperText className="errorText">Email has to be valid!</FormHelperText>
+                                        <FormHelperText className="helperText">Email has to be valid!</FormHelperText>
                                     )}
                                     {errors.email && errors.email.type === "required" && (
-                                        <FormHelperText className="errorText">Email is empty!</FormHelperText>
+                                        <FormHelperText className="helperText">Email is empty!</FormHelperText>
                                     )}
-                                    <InputLabel>
+                                    <InputLabel className='loginLabel'>
                                         Password
                                     </InputLabel>
                                     <TextField
+                                        InputProps={{ className: 'textFieldCss' }}
                                         name="password"
                                         type="password"
                                         placeholder="Password"
@@ -107,21 +110,22 @@ function Register() {
                                             }
                                         })} />
                                     {errors.password && errors.password.type === "required" && (
-                                        <FormHelperText className="errorText">Password is empty!</FormHelperText>
+                                        <FormHelperText className="helperText">Password is empty!</FormHelperText>
                                     )}
                                     {errors.password && errors.password.type === "minLength" && (
-                                        <FormHelperText className="errorText">Password has to be atleast 8 chars long!</FormHelperText>
+                                        <FormHelperText className="helperText">Password has to be atleast 8 chars long!</FormHelperText>
                                     )}
                                     {errors.password && errors.password.type === "positive" && (
-                                        <FormHelperText className="errorText">Dont use space at start and end!</FormHelperText>
+                                        <FormHelperText className="helperText">Dont use space at start and end!</FormHelperText>
                                     )}
                                     {errors.password && errors.password.type === "positive2" && (
-                                        <FormHelperText className="errorText">Dont use more than one space in row!</FormHelperText>
+                                        <FormHelperText className="helperText">Dont use more than one space in row!</FormHelperText>
                                     )}
-                                    <InputLabel>
+                                    <InputLabel className='loginLabel'>
                                         Confirm Password
                                     </InputLabel>
                                     <TextField
+                                        InputProps={{ className: 'textFieldCss' }}
                                         name="confirmpassword"
                                         type="password"
                                         placeholder="Confirm Password"

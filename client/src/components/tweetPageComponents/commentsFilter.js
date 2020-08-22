@@ -76,7 +76,7 @@ function CommentsFilter() {
                                         <option value='newest'>Newest</option>
                                     </Select>
                                     {errors.sort && errors.sort.type === "positive" && (
-                                        <FormHelperText className="errorText">Empty String!</FormHelperText>
+                                        <FormHelperText className="helperText">Empty String!</FormHelperText>
                                     )}
                                 </FormControl>
                             </div>

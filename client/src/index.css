@@ -20,7 +20,23 @@
     background:linear-gradient(45deg,#4ABB9E 20%,#F2F2F2 70%);
     width:50%;
 }
+.submitButton{
+    width: 100%;
+    transition: all .9s ease-in-out;
+}
+  .submitButton:hover{
+    transform: scale(1.1);
+}
 @media (max-width:600px){
+    .submitButton{
+        font-size:calc(2.5vw + 3px) !important;
+    }
+    .loginLabel{
+        font-size: calc(2vw + 3px) !important;
+    }
+    .loginTitle{
+        font-size: calc(2.5vw + 3px) !important;
+    }
     .formButton{
         font-size:calc(1.5vw + 5px) !important; 
     }
@@ -42,6 +58,15 @@
 }
 
 @media (orientation: landscape) and (max-width:600px){
+    .submitButton{
+        font-size:calc(2.5vw + 3px) !important;
+    }
+    .loginLabel{
+        font-size: calc(2vw + 3px) !important;
+    }
+    .loginTitle{
+        font-size: calc(2.5vw + 3px) !important;
+    }
     .formButton{
         font-size:calc(1.5vw + 5px) !important; 
     }

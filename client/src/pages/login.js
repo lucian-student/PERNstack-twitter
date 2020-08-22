@@ -29,19 +29,20 @@ function Login() {
     }
     return (
         <Fragment >
-            <div style={{ display: "flex" }}>
-                <div style={{ margin: "auto", width: '70%' }}>
+            <div className='firstCenterDiv'>
+                <div className='secondCenterDiv'>
                     <Paper elevation={2} className='formPaper'>
-                        <div style={{ display: "flex" }}>
-                            <div style={{ margin: "auto", width: '70%' }}>
-                                <FormLabel>
+                        <div className='firstCenterDiv'>
+                            <div className='secondCenterDiv'>
+                                <FormLabel className='loginTitle'>
                                     <h2>Login:</h2>
                                 </FormLabel>
                                 <form onSubmit={handleSubmit(handleLogin)}>
-                                    <InputLabel>
+                                    <InputLabel className='loginLabel'>
                                         Email
                                     </InputLabel>
                                     <TextField
+                                        InputProps={{ className: 'textFieldCss' }}
                                         name="email"
                                         type="email"
                                         placeholder="Email"
@@ -51,15 +52,16 @@ function Login() {
                                             required: true
                                         })} />
                                     {errors.email && errors.email.type === "pattern" && (
-                                        <FormHelperText className="errorText">Email has to be valid!</FormHelperText>
+                                        <FormHelperText className="helperText">Email has to be valid!</FormHelperText>
                                     )}
                                     {errors.email && errors.email.type === "required" && (
-                                        <FormHelperText className="errorText">Email is empty!</FormHelperText>
+                                        <FormHelperText className="helperText">Email is empty!</FormHelperText>
                                     )}
-                                    <InputLabel>
+                                    <InputLabel className='loginLabel'>
                                         Password
                                     </InputLabel>
                                     <TextField
+                                        InputProps={{ className: 'textFieldCss' }}
                                         name="password"
                                         type="password"
                                         placeholder="Password"
@@ -69,10 +71,10 @@ function Login() {
                                             minLength: 8
                                         })} />
                                     {errors.password && errors.password.type === "required" && (
-                                        <FormHelperText className="errorText">Password is empty!</FormHelperText>
+                                        <FormHelperText className="helperText">Password is empty!</FormHelperText>
                                     )}
                                     {errors.password && errors.password.type === "minLength" && (
-                                        <FormHelperText className="errorText">Password has to be atleast 8 chars long!</FormHelperText>
+                                        <FormHelperText className="helperText">Password has to be atleast 8 chars long!</FormHelperText>
                                     )}
                                     <Button type='submit' className='submitButton' style={{ backgroundColor: '#82E0AA' }}>
                                         Submit

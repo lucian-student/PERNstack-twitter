@@ -26,13 +26,6 @@
 .formPaper{
   background:linear-gradient(45deg,#85C1E9 30%, #154360 90%);
 }
-.submitButton{
-  width: 100%;
-  transition: all .9s ease-in-out;
-}
-.submitButton:hover{
-  transform: scale(1.1);
-}
 .mainStyle{
   background:linear-gradient(45deg,#F2F2F2 70%,#4ABB9E 20%);
 }
@@ -64,7 +57,7 @@
     font-size:calc(1.5vw + 5px) !important;
   }
   .linkRight{
-    font-size:calc(2vw + 10px);
+    font-size:calc(2vw + 5px) !important;
   }
   .linkLeft{
     font-size:calc(2vw + 5px) !important;
@@ -85,7 +78,7 @@
     font-size:calc(1.5vw + 5px) !important;
   }
   .linkRight{
-    font-size:calc(2vw + 10px);
+    font-size:calc(2vw + 5px) !important;
   }
   .linkLeft{
     font-size:calc(2vw + 2px) !important;

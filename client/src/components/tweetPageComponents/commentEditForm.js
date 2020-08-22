@@ -20,7 +20,7 @@ function CommentEditForm({ comment: { content, setEditing, index, comment_id } }
 
                 <TextField
                     style={{ width: '100%' }}
-                    InputProps={{ style: { fontSize: 'calc(2.5vw + 5px)' } }}
+                    InputProps={{ className:'textFieldCss'}}
                     name="content"
                     type="text"
                     multiline
@@ -33,7 +33,7 @@ function CommentEditForm({ comment: { content, setEditing, index, comment_id } }
 
                 <div style={{ float: 'right' }}>
                     <Button onClick={() => { setEditing(false) }}
-                        style={{ fontSize: 'calc(1.5vw + 5px)' }}>
+                        className='formButton'>
                         CANCEL
                      </Button>
                     <Button
@@ -41,7 +41,7 @@ function CommentEditForm({ comment: { content, setEditing, index, comment_id } }
                         type='submit'
                         variant="contained"
                         color="primary"
-                        style={{ fontSize: 'calc(1.5vw + 5px)' }}>
+                        className='formButton'>
                         COMMENT
                     </Button>
                 </div>
