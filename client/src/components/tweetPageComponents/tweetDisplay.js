@@ -13,6 +13,7 @@ import { deleteTweet } from '../../queries/tweetsQuery/tweetsQuery';
 import MenuOpenIcon from '@material-ui/icons/MenuOpen'
 import Paper from '@material-ui/core/Paper';
 import '../../cardCss.css';
+import { Link } from '@material-ui/core';
 function TweetDisplay() {
     const { tweet, setTweet } = useContext(CommentsContext);
     const { currentUser } = useContext(AuthContext);
@@ -30,7 +31,9 @@ function TweetDisplay() {
     return (
         <Paper elevation={3}
             style={{ overflow: 'hidden' }}>
-            <h1 className='cardTitle'>{tweet[0].username}</h1>
+            <Link className='linkUserPage' to={`userPage/${tweet[0].tweet_id}`}>
+                <h1 className='cardTitle'>{tweet[0].username}</h1>
+            </Link>
             {currentUser.user_id === tweet[0].user_id && !editing && openOptions && (
                 <div style={{ display: 'inline-block', float: 'right' }}>
                     <IconButton onClick={delete_tweet}

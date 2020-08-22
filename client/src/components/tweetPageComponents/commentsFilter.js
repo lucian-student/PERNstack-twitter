@@ -48,7 +48,6 @@ function CommentsFilter() {
         <div>
             {!filtering ? (
                 <Button className='filterButton'
-                    style={{ fontSize: 'calc(2.5vw + 5px)' }}
                     onClick={() => { setFiltering(true) }}>
                     Filters
                 </Button>
@@ -58,13 +57,13 @@ function CommentsFilter() {
                             <div>
                                 <FormControl >
                                     <InputLabel htmlFor="sort-native-simple"
-                                        style={{ fontSize: 'calc(2vw + 5px)' }}>Search</InputLabel>
+                                        className='selectProp'>Search</InputLabel>
                                     <Select
                                         native
                                         inputProps={{
                                             name: 'sort',
                                             id: 'sort-native-simple',
-                                            style: { fontSize: 'calc(2vw + 5px)' }
+                                            className: 'selectProp'
                                         }}
                                         inputRef={register({
                                             validate: {
@@ -82,12 +81,10 @@ function CommentsFilter() {
                                 </FormControl>
                             </div>
                             <Button className='filterButton2'
-                                style={{ fontSize: 'calc(1.5vw + 5px)' }}
                                 onClick={() => { setFiltering(false) }}>
                                 Cancel
                             </Button>
-                            <Button type='submit' className='filterButton2'
-                                style={{ fontSize: 'calc(1.5vw + 5px)' }}>
+                            <Button type='submit' className='filterButton2'>
                                 Submit
                             </Button>
                         </form>

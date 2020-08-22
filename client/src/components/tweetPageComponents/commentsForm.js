@@ -24,7 +24,7 @@ function CommentsForm() {
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <TextField
                         style={{ width: '100%' }}
-                        InputProps={{ style: { fontSize: 'calc(2.5vw + 5px)' } }}
+                        InputProps={{ className: 'textFieldCss' }}
                         name="content"
                         type="text"
                         multiline
@@ -35,7 +35,7 @@ function CommentsForm() {
                     {contentErrors && (
                         <div style={{ float: 'right' }}>
                             <Button onClick={() => setValue("content", null)}
-                                style={{ fontSize: 'calc(1.5vw + 5px)' }}>
+                                style={{ className: 'textFieldCss' }}>
                                 CANCEL
                              </Button>
                             <Button
@@ -43,7 +43,7 @@ function CommentsForm() {
                                 type='submit'
                                 variant="contained"
                                 color="primary"
-                                style={{ fontSize: 'calc(1.5vw + 5px)' }}>
+                                className='formButton'>
                                 COMMENT
                              </Button>
                         </div>
@@ -51,7 +51,6 @@ function CommentsForm() {
                 </form>
             ) : (
                     <Button className='filterButton'
-                        style={{ fontSize: 'calc(2.5vw + 5px)', width: '100%' }}
                         onClick={() => { setStart(true) }}>
                         Create Comment
                     </Button>

@@ -41,7 +41,9 @@ function TweetCard({ tweet: { username, content, num_of_likes, num_of_comments, 
     return (
         <Paper elevation={3}
             style={{ overflow: 'hidden' }}>
-            <h1 className='cardTitle'>{username}</h1>
+            <Link className='linkUserPage' to={`userPage/${user_id}`}>
+                <h1 className='cardTitle'>{username}</h1>
+            </Link>
             {currentUser.user_id === user_id && !editing && openOptions && (
                 <div style={{ display: 'inline-block', float: 'right' }}>
                     <IconButton onClick={delete_tweet}
@@ -77,7 +79,6 @@ function TweetCard({ tweet: { username, content, num_of_likes, num_of_comments, 
                 {!editing ? (
                     <p style={{ marginLeft: '10%', marginRight: '10%' }}
                         className='contentField'>
-
                         {content}
                     </p>
                 ) : (
