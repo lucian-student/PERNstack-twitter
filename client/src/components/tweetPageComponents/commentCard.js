@@ -39,13 +39,19 @@ function CommentCard({ comment: { tweet_id, username, num_of_likes, content, com
                     <div style={{ display: 'inline-block', float: 'right' }}>
                         {currentUser.user_id === user_id && !editing && openOptions && (
                             <div>
-                                <IconButton onClick={delete_comment}
+                                <IconButton onClick={() => {
+                                    ReactTooltip.hide()
+                                    delete_comment()
+                                }}
                                     data-for='deleteButton'
                                     data-tip="Delete">
                                     <DeleteIcon className='selectProp' />
                                 </IconButton>
                                 <ReactTooltip id='deleteButton' place="top" type="dark" effect="solid" />
-                                <IconButton onClick={edit_comment}
+                                <IconButton onClick={() => {
+                                    ReactTooltip.hide()
+                                    edit_comment()
+                                }}
                                     data-for='editButton'
                                     data-tip="Edit">
                                     <EditIcon className='selectProp' />
@@ -57,7 +63,10 @@ function CommentCard({ comment: { tweet_id, username, num_of_likes, content, com
                     <div style={{ display: 'inline-block', float: 'right' }}>
                         {!openOptions && (
                             <div>
-                                <IconButton onClick={() => { setOpenOptions(true) }}
+                                <IconButton onClick={() => {
+                                    ReactTooltip.hide()
+                                    setOpenOptions(true)
+                                }}
                                     data-for='menuOpen'
                                     data-tip="Open Menu">
                                     <MenuOpenIcon className='selectProp' />

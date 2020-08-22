@@ -46,7 +46,10 @@ function TweetCard({ tweet: { username, content, num_of_likes, num_of_comments, 
             </Link>
             {currentUser.user_id === user_id && !editing && openOptions && (
                 <div style={{ display: 'inline-block', float: 'right' }}>
-                    <IconButton onClick={delete_tweet}
+                    <IconButton onClick={() => {
+                        ReactTooltip.hide()
+                        delete_tweet()
+                    }}
                         data-for='deleteButton'
                         data-tip="Delete">
                         <DeleteIcon className='selectProp' />
@@ -66,7 +69,10 @@ function TweetCard({ tweet: { username, content, num_of_likes, num_of_comments, 
             <div style={{ display: 'inline-block', float: 'right' }}>
                 {!openOptions && (
                     <div>
-                        <IconButton onClick={() => { setOpenOptions(true) }}
+                        <IconButton onClick={() => {
+                            ReactTooltip.hide()
+                            setOpenOptions(true)
+                        }}
                             data-for='menuOpen'
                             data-tip="Open Menu">
                             <MenuOpenIcon className='selectProp' />
