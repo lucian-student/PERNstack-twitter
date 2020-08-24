@@ -85,7 +85,7 @@ function CommentCard({ comment: { tweet_id, username, num_of_likes, content, com
                             style={{ display: 'inline-block' }}>
                             <FavoriteIcon className='selectProp' />
                         </IconButton>
-                        <div style={{ className: 'selectProp', display: 'inline-block' }} >
+                        <div style={{ display: 'inline-block' }} className='selectProp' >
                             {num_of_likes}
                         </div>
                     </div>
