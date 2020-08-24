@@ -35,7 +35,7 @@ function CommentsForm() {
                     {contentErrors && (
                         <div style={{ float: 'right' }}>
                             <Button onClick={() => setValue("content", null)}
-                                style={{ className: 'textFieldCss' }}>
+                                style={{ className: 'formButton' }}>
                                 CANCEL
                              </Button>
                             <Button
