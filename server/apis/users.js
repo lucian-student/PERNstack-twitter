@@ -33,7 +33,8 @@ router.get('/me', authorization, async (req, res) => {
 router.post('/register/', validation, async (req, res) => {
     const client = await pool.connect();
     try {
-        const { name, email, password } = req.body.data;
+        const { username, email, password } = req.body.data;
+        console.log(req.body.data);
         // start transaction
         await client.query('BEGIN');
         const userCheck = await client.query('SELECT * FROM users WHERE email=$1', [email]);
@@ -45,7 +46,7 @@ router.post('/register/', validation, async (req, res) => {
             //end of password hash
             const newUser = await client.query
                 ('INSERT INTO users (name,email,password,online) VALUES ($1,$2,$3,$4) RETURNING *',
-                    [name, email, bcryptPassword, true]
+                    [username, email, bcryptPassword, true]
                 );
             //token handelingew
             const accessToken = generateAccessToken(newUser.rows[0].user_id);

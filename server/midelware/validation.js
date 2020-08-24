@@ -1,12 +1,11 @@
 module.exports = function (req, res, next) {
-    const { email, name, password } = req.body.data;
-    console.log(req.body.data);
+    const { email, username, password } = req.body.data;
     function validEmail(userEmail) {
         return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(userEmail);
     }
 
     if (req.path === '/register/') {
-        if (![email, name, password].every(Boolean)) {
+        if (![email, username, password].every(Boolean)) {
             return res.json('Missing Credentials');
         } else if (!validEmail(email)) {
             return res.status(401).json('Invalid Email');
@@ -18,6 +17,5 @@ module.exports = function (req, res, next) {
             return res.status(401).json('Invalid Email');
         }
     }
-
     next();
 };
